@@ -1,7 +1,6 @@
 //返回一个继承自原型对象p的属性的新对象
 function createObj(p) {
-
-    if (p == null) { } throw TypeError();
+    if (p == null) throw TypeError();
     // p是一个对象，但不能是null
     if (Object.create)
         // 如果Object.create（）存在
