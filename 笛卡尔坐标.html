@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script src="js/createObj.js"></script>
+    <script>
+        //直角坐标系的对象
+        var p = {
+            x:1,
+            y:1,
+
+            //r是可读写的存取器属性
+            get r(){
+                return Math.sqrt(this.x,this.x+this.y*this.y);
+            },
+
+            set r(newvalue){
+                var oldvalue = Math.sqrt(this.x*this.x + this.y*this.y);
+                var ratio = newvalue/oldvalue;
+
+                this.x *= ratio;
+                this.y *= ratio;
+            },
+            //theta 是只读存取器属性
+            get theta(){
+                return Math.atan2(this.y,this.x);
+            }
+        }
+        var ss = createObj(p);
+        ss.x = 2;
+        ss.y = 2;
+        console.log(ss.r);
+        console.log(ss.theta)
+    </script>
+</body>
+</html>
