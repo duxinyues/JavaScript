@@ -102,3 +102,28 @@
         }
         return Object.prototype.toString.call(o).slice(8,-1);
     }
+
+    /**
+     * 检测类数组对象
+     * 判定O是否是一个类数组对象
+     * 字符串和函数有length属性，可以通过typeof检测将其排除
+     * 客户端的JavaScript中的DOM文本节点也有length属性，通过O.nodeType != 3 将其排除
+     */
+    function isArrayLike(o){
+        if (o && typeof o === 'object' && isFinite(o.length) && o.length>=0 && o.length === Math.floor(o.length) && o.length < 4294967296) {
+            return  true
+        }else{
+            return false;
+        }
+    }
+
+
+Array.join = Array.join || function(a,sep){
+    return Array.prototype.join.call(a, sep);
+};
+Array.slice = Array.slice || function (a, sep){
+    return Array.prototype.slice.call(a, sep);
+};
+Array.map = Array.map || function (a, sep){
+    return Array.prototype.map.call(a, sep);
+}

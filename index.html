@@ -9,66 +9,17 @@
 <body>
     <script src="js/utils.js"></script>
     <script>
-        //产生严格自增的序列号
-        var serialnum = {
-            //该数据属性包含下一个序列号
-            //$符号暗示该属性是一个私有属性
-            $n:0,
+        var s = "global scope";
 
-            get next(){
-                return this.$n++;
-            },
-            //给n设置新的值，当新的值大于当前的值时才能设置成功
-            set next(n){
-                if (n>this.$n) {
-                    this.$n = n;
-                }else{
-                    throw "序列号不能比当前序号小";
-                }
+        function checkscope(){
+            var s = "local scope";
+            function f(){
+                return s;
             }
-        } 
-        serialnum.n = 1;
-        console.log(serialnum) ;
-        
-        var o = {};
-        Object.defineProperty(o,"x",{
-            value:5,
-            writable:true,
-            enumerable:false,
-            configurable:true
-        });
-        console.log(o.x=6);
-        console.log(Object.keys(o));
-
-        var str = {name:"duxin"}
-        var o = Object.create(str);
-        var ss ={name:"hfgf"}
-        console.log(str.isPrototypeOf(o));
-        console.log(Object.prototype.isPrototypeOf(str));//str继承自Object.prototype
-
-       var arr = [1,2,3,4,5,6,7];
-       var sum = 0;
-       arr.forEach(function(value){
-           sum += value;
-       });
-       console.log(sum);
-       arr.forEach(function(v,i,a){
-           a[i] = v + 1;
-       });
-       console.log(arr)
-
-       function foreach(a,f,t){
-           try {
-               a.forEach(f,t)
-           } catch (error) {
-               if (error === foreach.break) {
-                   return
-               }else{
-                   throw error
-               }
-           }
-       }
-       foreach.break = new Error("提前终止")
+            return f;
+        }
+        checkscope()();
+        console.log(checkscope()());// local scope
     </script>
 </body>
 </html>
