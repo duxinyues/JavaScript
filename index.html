@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script src="js/inheritance.js"></script>
+
+
+    <script>
+        //原型继承实例
+            var book = {
+                name: "C++",
+                alike: ["css", "HTML5"]
+            };
+            var newBook = inheritObject(book);
+
+            newBook.name = "vue";
+
+            newBook.alike.push("ajax");
+
+            console.log(newBook.alike);
+
+        //终极者继承实例
+        function SuperClass(name){
+            this.name = name;
+            this.color = ['red','blue','green'];
+        }
+
+        SuperClass.prototype.getName = function(){
+            console.log(this.name)
+        };
+
+        function subClass(name,time){
+            SuperClass.call(this,name);
+
+            this.time = time;
+        }
+
+        inheritPrototype(subClass,SuperClass);
+
+        subClass.prototype.getTime = function(){
+            console.log(this.time);
+        }
+
+        var instan1 = new subClass("java",'2018');
+        instan1.color.push("pink");
+        console.log(instan1.color);
+        instan1.getName();
+        instan1.getTime();
+
+        //单多继承继承的实例
+        var book1 = {
+            name:"javascript",
+            alike:['css','html','javascript']
+        }
+
+        var anotherBook = {
+            color:'blue'
+        }
+
+        extend(anotherBook,book1);
+        console.log(anotherBook.name);
+
+        anotherBook.mix(book1,book);
+        console.log(anotherBook)
+    </script>
+</body>
+</html>
