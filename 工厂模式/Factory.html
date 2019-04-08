@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script src="../js/inheritance.js"></script>
+    <script src="../js/Factory.js"></script>
+
+    <script>
+        //原型继承实例
+            var book = {
+                name: "C++",
+                alike: ["css", "HTML5"]
+            };
+            var newBook = inheritObject(book);
+
+            newBook.name = "vue";
+
+            newBook.alike.push("ajax");
+
+            console.log(newBook.alike);
+
+        //终极者继承实例
+        function SuperClass(name){
+            this.name = name;
+            this.color = ['red','blue','green'];
+        }
+
+        SuperClass.prototype.getName = function(){
+            console.log(this.name)
+        };
+
+        function subClass(name,time){
+            SuperClass.call(this,name);
+
+            this.time = time;
+        }
+
+        inheritPrototype(subClass,SuperClass);
+
+        subClass.prototype.getTime = function(){
+            console.log(this.time);
+        }
+
+        var instan1 = new subClass("java",'2018');
+        instan1.color.push("pink");
+        console.log(instan1.color);
+        instan1.getName();
+        instan1.getTime();
+
+        //单多继承继承的实例
+        var book1 = {
+            name:"javascript",
+            alike:['css','html','javascript']
+        }
+
+        var anotherBook = {
+            color:'blue'
+        }
+
+        extend(anotherBook,book1);
+        console.log(anotherBook.name);
+
+        anotherBook.mix(book1,book);
+        console.log(anotherBook);
+
+
+        var userNameAlert = createPop("alert", "用户名只能是26个字母和数字");
+
+        console.log(userNameAlert.content);
+        console.log(Factory.prototype);
+
+        //抽象工厂实例
+        VehicleFactory.Car = function(){
+            this.type = 'car';
+        };
+
+        VehicleFactory.Car.prototype = {
+            getPrice:function(){
+                return new Error("抽象方法不能使用");
+            },
+            getSpeed:function(){
+                return new Error("抽象方法不能使用");
+            }
+        };
+
+        VehicleFactory.Bus = function(){
+            this.type = "bus";
+        };
+
+        VehicleFactory.Bus.prototype = {
+            getPrice:function(){
+                return new Error("该抽象方法不能调用")
+            },
+            getPassengerNum:function(){
+                return new Error("该抽象方法不能调用")
+            }
+        };
+
+        VehicleFactory.Truck = function(){
+            this.type = "truck";
+        };
+
+        VehicleFactory.Truck.prototype = {
+            getPrice:function(){
+                return new Error("该抽象方法不能调用")
+            },
+            getTrainload:function(){
+                return new Error("该抽象方法不能调用")
+            }
+        };
+
+        //宝马汽车子类
+        var BMW = function(price,speed){
+            this.price = price;
+            this.speed = speed;
+        };
+
+        VehicleFactory(BMW,'Car');
+        BMW.prototype.getPrice = function(){
+            return  this.price;
+        }
+        BMW.prototype.getSpeed = function(){
+            return this.speed;
+        }
+
+        //
+        var Lamborghini = function(price,speed){
+            this.price = price;
+            this.speed = speed;
+        };
+        VehicleFactory(Lamborghini,"Car");
+        Lamborghini.prototype.getPrice = function(){
+            return this.price
+        }
+        Lamborghini.prototype.getSpeed = function(){
+            return this.speed;
+        }
+
+        var YUTONG = function(price,passenger){
+            this.price = price;
+            this.passenger = passenger;
+        }
+        //抽象工厂实现对Bus抽象类的继承
+        VehicleFactory(YUTONG,"Bus");
+        YUTONG.prototype.getPrice = function(){
+            return this.price;
+        }
+        YUTONG.prototype.getPassengerNum = function(){
+            return  this.passenger;
+        }
+
+        //奔驰汽车子类
+        var BenzTruck = function(price,trainLoad){
+            this.price = price;
+            this.trainLoad = trainLoad;
+        }
+
+        VehicleFactory(BenzTruck,"Truck");
+        BenzTruck.prototype.getPrice = function(){
+            return  this.price;
+        }
+
+        BenzTruck.prototype.getTrainload = function(){
+            return this.trainLoad
+        }
+        //测试代码
+
+        var truck1 = new BenzTruck(1000000,250000);
+
+        console.log(truck1.getPrice());
+        console.log(truck1.type)
+    </script>
+</body>
+</html>
