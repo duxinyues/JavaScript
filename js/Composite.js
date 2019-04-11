@@ -119,7 +119,7 @@ var NewsGroup = function(classname){
 inheritPrototype(NewsGroup,News);
 
 NewsGroup.prototype.init = function(){
-    this.element = docuemnt.createElement("div");
+    this.element = document.createElement("div");
     this.element.classname = this.classname;
 }
 
@@ -148,7 +148,7 @@ ImageNews.prototype.init = function(){
     var img = new Image();
     img.src = this.url;
     this.element.appendChild(img);
-    this.element.className = "image-news "+tis.classname;
+    this.element.className = "image-news "+this.classname;
     this.element.href = this.href;
 }
 
@@ -235,6 +235,20 @@ new1.add(
     )
 ).add(
     new Item("normal").add(
-        new IconNews("fgbkjdfh","#","live")
+        new NewsGroup('has-img').add(
+            new ImageNews("http://image.baidu.com/search/detail?ct=503316480&z=undefined&tn=baiduimagedetail&ipn=d&word=%E8%AF%BB%E4%B9%A6%E4%BC%9A&step_word=&ie=utf-8&in=&cl=2&lm=-1&st=undefined&hd=undefined&latest=undefined&copyright=undefined&cs=1237806382,2069296067&os=2466978500,905549571&simid=3484268445,337602749&pn=2&rn=1&di=84150&ln=1887&fr=&fmq=1554998108461_R&fm=&ic=undefined&s=undefined&se=&sme=&tab=0&width=undefined&height=undefined&face=undefined&is=0,0&istype=0&ist=&jit=&bdtype=0&spn=0&pi=0&gsm=0&objurl=http%3A%2F%2Fimg.redocn.com%2Fsheji%2F20160203%2Fdushuhuiyouzhongguofenghaibao_5848794.jpg&rpstart=0&rpnum=0&adpicid=0&force=undefined","#","small")
+        ).add(
+            new EasyNews("!!!!")
+        ).add(
+            new EasyNews("@@@@")
+        )
     )
-)
+).add(
+    new Item('normal').add(
+        new TypeNews(">>>","#","NBA","left")
+    )
+).add(
+    new Item("normal").add(
+        new TypeNews("}}}}}}","#","CBA","right")
+    )
+).show()
