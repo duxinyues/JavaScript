@@ -127,3 +127,64 @@ Array.slice = Array.slice || function (a, sep){
 Array.map = Array.map || function (a, sep){
     return Array.prototype.map.call(a, sep);
 }
+
+/**
+ * 模板方法模式
+ */
+
+//模板类  提示框data渲染数据
+var Alert = function(data){
+    if (!data) {
+        return;
+    }
+    //内容
+    this.content = data.content;
+    //提示面板
+    this.panel = document.createElement("div");
+    //提示内容组件
+    this.contentNode = document.createElement("p");
+    //确定按钮组件
+    this.confirmBtn = document.createElement("span");
+    //关闭按钮组件
+    this.closeBtn = document.createElement("b");
+
+    this.panel.className = "alert";
+    this.closeBtn.className = "a-close";
+    this.confirmBtn.className = "a-confirm";
+    this.confirmBtn.innerHTML = data.confirm || "确认";
+    this.contentNode.innerHTML = this.content;
+    this.success = data.success || function(){};
+    this.fail = data.fail || function(){};
+}
+
+//提示框原型
+Alert.prototype = {
+    init:function(){
+        this.panel.appendChild(this.closeBtn);
+        this.panel.appendChild(this.contentNode);
+        this.panel.appendChild(this.confirmBtn);
+
+        document.body.appendChild(this.panel);
+        this.bindEvent();
+        this.show()
+    },
+    bindEvent:function(){
+        var that = this;
+        thi.closeBtn.onclick = function(){
+            that.success();
+            that.hide();
+        }
+
+        this.confirmBtn.onclick = function(){
+            that.success();
+            that.hide();
+        }
+    },
+    hide:function(){
+        this.panel.style.dispaly = "none";
+    },
+
+    show:function(){
+        this.panel.style.dispaly = "block";
+    }
+}

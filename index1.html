@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script src="js/utils.js"></script>
+
+    <script>
+        //右侧按钮提示框
+        var RightAlert = function(data){
+            Alert.call(this,data);
+
+            this.confirmBtn.className = this.confirmBtn.className+' right';
+        }
+        RightAlert.prototype = new Alert();
+
+        var TitleAlert = function(data){
+            Alert.call(this,data);
+
+            this.title = data.title;
+            this.titleNode = document.createElement("h3");
+            this.titleNode.innerHTML = this.title
+        }
+        TitleAlert.prototype = new Alert();
+
+        TitleAlert.prototype.init = function(){
+            this.panel.insertBefore(this.titleNode,this.panel.firstChild);
+            Alert.prototype.init.call(this);
+        }
+
+        //取消按钮
+        var CancelAlert = function(data){
+            TitleAlert.call(this,data);
+            this.cancel = data.cancel;
+
+            this.cancelBtn = document.createElement('span');
+
+            this.cancelBtn.className = "cancel";
+            this.cancelBtn.innerHTML = this.cancel || "取消";
+        }
+
+        CancelAlert.prototype = new Alert();
+        CancelAlert.prototype.init = function(){
+            TitleAlert.prototype.init.call(this);
+            this.panel.appendChild(this.cancelBtn);
+        }
+
+        CancelAlert.prototype.bindEvent = function(){
+            var that = this;
+            TitleAlert.prototype.bindEvent.call(that);
+            
+        }
+
+        window.onload=function(){
+            $(".wx").text(mess2)
+        }
+    </script>
+</body>
+</html>
