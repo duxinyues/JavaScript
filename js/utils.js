@@ -170,7 +170,7 @@ Alert.prototype = {
     },
     bindEvent:function(){
         var that = this;
-        thi.closeBtn.onclick = function(){
+        this.closeBtn.onclick = function(){
             that.success();
             that.hide();
         }
@@ -188,3 +188,29 @@ Alert.prototype = {
         this.panel.style.dispaly = "block";
     }
 }
+
+
+/**
+ * 观察者模式
+ */
+
+ //把观察者放到闭包中，页面加载就立即执行
+ var Observer = (function(){
+     var __messages = {};
+     return {
+         //注册信息接口
+         regist:function(type,fn){
+             if(typeof __messages[type]==='undefined'){
+                 __messages[type] = [fn];
+             }else{
+                 __messages[type].push(fn);
+             }
+         },
+         //发布信息接口
+         fire:function(){},
+         //移除信息接口
+         remove:function(){}
+     }
+ })();
+
+ 

@@ -7,6 +7,7 @@
     <title>Document</title>
 </head>
 <body>
+    <div id="content"></div>
     <script src="js/utils.js"></script>
 
     <script>
@@ -52,12 +53,69 @@
         CancelAlert.prototype.bindEvent = function(){
             var that = this;
             TitleAlert.prototype.bindEvent.call(that);
-            
+            this.cancelBtn.onclick = function(){
+                that.fail();
+                that.hide();
+            }
+        }
+        new CancelAlert({
+            title:"提示标题",
+            content:"提示内容",
+            success:function(){
+                console.log("ok");
+            },
+            fail:function(){
+                console.log("canpel");
+            }
+        }).init();
+
+        function formateString(str,data){
+            return str.replace(/\{#(\w+)#\}/g,function(match,key){
+                return typeof data[key]=== undefined ? "" : data[key];
+            })
         }
 
-        window.onload=function(){
-            $(".wx").text(mess2)
+        var Nav = function(data){
+            this.item = '<a href="{#href#}" title="{#title#}">{#name#}</a>';
+
+            this.html = "";
+            for(var i=0,len= data.length;i<len;i++){
+                this.html += formateString(this.item,data[i]);
+            }
+
+            return this.html;
         }
+        
+        var NumNav = function(data){
+            var tpl = '<b>{#num#}</b>';
+
+            for(var i=data.length-1;i>= 0;i--){
+                data[i].name += data[i].name + formateString(tpl,data[i]);
+            }
+
+            return Nav.call(this,data);
+        }
+
+        var LinkNav = function(data){
+            var tpl = '<span>{#link#}</span>';
+
+            for(var i =data.length-1;i>=0;i--){
+                data[i].name +=data[i].name + formateString(tpl,data[i]);
+            }
+
+            return Nav.call(this,data);
+        }
+
+
+        var nav = document.getElementById("content");
+        nav.innerHTML = NumNav([
+            {
+                href:"http://wyysz.com",
+                title:"读心，读自己",
+                name:"读心",
+                num:'10'
+            }
+        ])
     </script>
 </body>
 </html>
