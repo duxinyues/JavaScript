@@ -8,6 +8,11 @@
 </head>
 <body>
     <div id="content"></div>
+
+    数目：<span id="msg_num"></span>
+    <div id="msg"></div>
+    <input type="text" id="user_input">
+    <span id="user_submit">Btn</span>
     <script src="js/utils.js"></script>
 
     <script>
@@ -76,7 +81,7 @@
         }
 
         var Nav = function(data){
-            this.item = '<a href="{#href#}" title="{#title#}">{#name#}</a>';
+            this.item = '<li><a href="{#href#}" title="{#title#}">{#name#}</a></li>';
 
             this.html = "";
             for(var i=0,len= data.length;i<len;i++){
@@ -114,8 +119,22 @@
                 title:"读心，读自己",
                 name:"读心",
                 num:'10'
+            },
+            {
+                href:"http://baidu.com",
+                title:"百度",
+                name:"baidu",
+                num:'25'
             }
-        ])
+        ]);
+            //注册信息
+        Observer.regist('test',function(e){
+            console.log(e.type,e.args.msg)
+        });
+        //发布信息
+        Observer.fire("test",{msg:"测试信息"}
+        
+        )
     </script>
 </body>
 </html>

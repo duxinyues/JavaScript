@@ -198,19 +198,63 @@ Alert.prototype = {
  var Observer = (function(){
      var __messages = {};
      return {
-         //注册信息接口
+         /**
+          * 注册信息的接口，把订阅者注册的消息推入消息队列中
+          * @param {*} type  消息类型
+          * @param {*} fn 相应的处理动作
+          */
          regist:function(type,fn){
+             //如果消息不存在，则是创建一个该消息类型
              if(typeof __messages[type]==='undefined'){
+                 //把动作放入该消息对应的动作执行队列中
                  __messages[type] = [fn];
              }else{
+                 //如果该消息不存在，则把动作方法加入该消息对应的动作执行序列中
                  __messages[type].push(fn);
              }
          },
-         //发布信息接口
-         fire:function(){},
-         //移除信息接口
-         remove:function(){}
+         /**
+          * 发布信息接口，观察者发布消息时，订阅者订阅的消息一次执行，
+          * @param {*} type 消息类型
+          * @param {*} args 动作在执行时需要的参数
+          */
+         fire:function(type,args){
+             //消息没有被注册，则返回
+            if (!__messages[type]) {
+                return ;
+            }
+                //定义消息信息
+                var events = {
+                    type:type,
+                    args:args || {} //消息中携带的数据
+                };
+                var i = 0;
+                var len = __messages[type].length;
+                for(;i<len;i++){
+                    //依次执行注册的消息对应的动作序列
+                    __messages[type][i].call(this,events);
+                }
+         },
+         /**
+          * 移除信息接口，订阅者注销的消息从信息队列中移除，需要两个参数。其中先检验该消息是否存在
+          * @param type  消息的类型
+          * @param fn  某一个动作的方法
+          *  */
+         remove:function(type,fn){
+             //
+             if (__messages[type] instanceof Array) {
+                 //从最后一个消息动作开始遍历
+                var i = __messages[type].length - 1;
+                for(;i>=0;i--){
+                    //该动作存在，则在信息动作序列中移除
+                }
+             }
+         }
      }
  })();
 
+ /**
+  * 追加消息的实例
+  */
+ 
  
