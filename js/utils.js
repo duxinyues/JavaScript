@@ -438,4 +438,169 @@ Alert.prototype = {
        return context.getElementsByTagName(tag);
    }
 
-   
+
+   /**
+    * 异步请求对象（简化版本）
+    * @param data  请求数据
+    * @param dealType  响应数据处理对象
+    * @param dom  事件源
+    */
+
+    var sendData = function(data,dealType,dom){
+        var xhr = new XMLHttpRequest();
+        var url = "路径";
+
+        xhr.onload = function(event){
+            if ((xhr.status >=200 && xhr.status<300) || xhr.status == 304) {
+                dealData(xhr.responseText,dealType,dom);
+            }else{
+                console.log("请求失败");
+            }
+        };
+
+        for(var i in data){
+            url += '&'+i+"="+data[i];
+        }
+
+        //发送异步请求
+        xhr.open("get",url,true);
+        xhr.send(null);
+    }
+
+    /**
+     * 处理响应数据
+     * @param data 响应数据
+     * @param dealType  响应数据处理对象
+     * @param dom  事件源
+     */
+    var dealData = function(data,dealType,dom){
+        var dataType = Object.prototype.toString.call(data);
+
+        switch (dealType) {
+            case "sug":
+                if (dataType === "[object Array]") {
+                    //创建提示按钮
+                    return createSug(data,dom);
+                }
+                if (dataType === "[object Object]") {
+                    var newData = [];
+                    for(var i in data){
+                        newData.push(data[i]);
+                    }
+                    //提示创建按钮组件
+                    return createSug(newData,dom);
+                }
+                return createSug([data],dom);
+                break;
+            case 'validate':
+                //创建校验组件
+                return createValidataResult(data,dom);
+                break;
+        }
+    }
+
+    /**
+     * 创建提示框组件
+     * @param  data 响应适配数据
+     * @param dom 事件源
+     */
+
+     var createSug = function(data,dom){
+         var i = 0;
+         var len = data.length;
+         var html = "";
+         for(;i<len;i++){
+             html += '<li>'+data[i]+'</li>';
+         }
+
+         dom.parentNode.getElementsByTagName("ul")[0].innerHTML = html
+     }
+
+     /**
+      * 创建校验组件
+      * @param  data 响应适配数据
+      * @param dom  事件源
+      */
+
+      var createValidataResult = function(data,dom){
+          //显示验证结果
+          dom.parentNode.getElementsByTagName("span")[0].innerHTML = data;
+      }
+
+
+      //单元测试
+        var createSug = function (data, dom) {
+            console.log(data, dom, "createSug");
+        }
+        var createValidataResult = function (data, dom) {
+            console.log(data, dom, "createValidataResult");
+        }
+
+    
+    /**
+     * 动态创建视图
+     * 命令模式
+     */
+
+    var viewCommand = (function(){
+        var tpl = {
+            //展示图片结构模板
+            product:[
+                `<div>
+                    <img src="{#src#}" />
+                    <p>{#text#}</p>
+                 </div>`
+            ].join(''),
+
+            //展示标题结构
+            title:[
+                `<div class="title">
+                    <div class="main">
+                        <h2>{#title#}</h2>
+                        <p>{#tips#}</p>
+                    </div>
+                 </div>`
+            ].join("")
+        };
+        
+        var  html = '';
+        function  formateString(str,obj){
+            //替换{##}之间的字符串
+            return str.replace(/\{#(\w+)#\}/g,function(match,key){
+                return obj[key]
+            })
+        }
+
+        //方法集合
+        var Action = {
+            create:function(data,view){
+                if (data.length) {
+                    for(var i = 0,len=data.length;i<lenl;i++){
+                        html += formateString(tpl[view],data[i])
+                    }
+                }else{
+                    html += formateString(tpl[view],data);
+                }
+            },
+            display:function(container,data,view){
+                //传入数据
+                if (data) {
+                    this.create(data,view);
+                }
+
+                //展示模块
+                document.getElementById(container).innerHTML = html;
+                //展示之后清空缓存的字符串
+                html = '';
+            }
+        }
+        //命令接口
+        return function excute(msg){
+            //若msg.param不是数组，则将其转化为数组，因为apply方法要求第二个
+            msg.param = Object.prototype.toString.call(msg.param) === "[object Array]" ? msg.param : [msg.param];
+
+            Action[msg.command].apply(Action,msg.param);
+        }
+    })();
+
+    
