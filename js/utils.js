@@ -253,8 +253,189 @@ Alert.prototype = {
      }
  })();
 
+ 
  /**
-  * 追加消息的实例
+  * 状态模式
+  * 一个投票结果状态的实例
   */
- 
- 
+
+  //投票结果状态对象
+  var ResultState = function(){
+      //把结果保存在内部状态中
+      var State = {
+          //每一一种状态作为一个独立的方法保存
+          state0:function(){
+              console.log("状态1");
+          },
+          state1:function(){
+              console.log("状态2");
+          }
+      }
+
+       function show(result){
+           State['state'+result] && State["state"+result]();
+       }
+
+       return {
+           show:show
+       }
+  }();
+
+  ResultState.show(0);//状态1
+
+  /**
+   * 
+   */
+
+   var  MarryState = function(){
+       //内部私有变量
+       var _currentState = {},
+       states = {
+           jump:function(){
+               console.log("跳跃");
+           },
+           move:function(){
+               console.log("移动");
+           },
+           shoot:function(){
+               console.log("射击");
+           },
+           squat:function(){
+               console.log("蹲下");
+           }
+       };
+
+       //动作控制类
+       var Action = {
+           changeState:function(){
+               //组合动作通过传递的多个参数来实现
+               var arg = arguments;
+
+               //重置内部状态
+               _currentState = {};
+
+               //如果有动作，则添加动作
+               if (arg.length) {
+                   //遍历动作
+                   for(var i =0,len=arg.length;i<len;i++){
+                       //向内部状态添加动作
+                       _currentState[arg[i]] = true;
+                   }
+               }
+               return this;
+           },
+           goes:function(){
+               console.log("触发一次动作");
+
+               //遍历内部状态保存的动作
+               for(var i in _currentState){
+                   states[i] && states[i]();
+               }
+               return this;
+           }
+       }
+
+       //返回接口change,goes
+       return {
+           change:Action.changeState,
+           goes:Action.goes
+       }
+   }
+
+   var m = new MarryState();
+   m.change("jump","move")
+   .goes()
+   .goes()
+   .change("shoot")
+   .goes();
+   
+/**
+ * 商品促销活动中的策略模式
+ */
+
+ var PriceStrategy = function(){
+     //内部算法
+     var stragtagy = {
+         //100返39
+         return39:function(price){
+             return +price + parseInt(price/100)*39;
+         },
+         //100返50
+         return50:function(price){
+             return +price + parseInt(price/100)*50;
+         },
+
+         //9折
+         percent90:function(price){
+             return  price * 9/10
+         },
+
+         //8折
+         percent80:function(price){
+             return price*8/10
+         },
+
+         //5折
+         percent50:function(price){
+             return price*5/10;
+         }
+     }
+
+     //策略算法调用接口
+     return function(algorithm,price){
+         return stragtagy[algorithm] && stragtagy[algorithm](price)
+     }
+ }();
+
+ var p = PriceStrategy("return50","200");
+ console.log(p);
+
+
+ /**
+  * 表单验证
+  */
+
+  var InputStrategy = function(){
+      var strategy = {
+          //判断是否为空
+          notNull:function(value){
+              return /\s+/.test(value) ? "请输入内容" : " "
+          },
+          //Number
+          number:function(value){
+              return /^[0-9]+(\.[0-9]+)?$/.test(value) ? '' : "请输入数字";
+          },
+          //phone
+          phone:function(value){
+              return /^\d{3}\-\d{8}$|^\d{4}\-\d{7}$/.test(value) ? "":"请正确输入电话号码格式，如001-12345678或者0418-1234567"
+          }
+      }
+
+      return {
+          //验证接口
+          check:function(type,value){
+              value = value.replace(/^\s+|\s+$/g,"");
+              return strategy[type] ? strategy[type](value) : "没有该类型的检测方法"
+          },
+          //添加策略
+          addSrategy:function(type,fn){
+              strategy[type] = fn;
+          }
+      }
+  }();
+
+  //拓展策略
+  InputStrategy.addSrategy("nickname",function(value){
+      return /^[a-zA-Z]\w{3,7}$/.test(value) ? "" : "请输入4-8位昵称！"
+  });
+
+  /**
+   * 外观模式简化元素的获取
+   */
+
+   function $tag(tag,context){
+       context = context || document;
+       return context.getElementsByTagName(tag);
+   }
+
+   

@@ -7,32 +7,17 @@
     <title>Document</title>
 </head>
 <body>
+    <input type="text">
+    <input type="submit">
+    <span></span>
     <script src="js/utils.js"></script>
     <script>
-        //学生类
-        var Student = function(result){
-            var that = this;
-            that.result = result;
-            that.say = function(){
-                console.log(that.result);
-            }
-        }
+       $tag('input')[1].onclick = function(){
+           //获取输入的内容
+           var value = $tag('input')[0].value;
 
-        //学生回答问题
-        Student.prototype.answer = function(question){
-            Observer.regist(question,this.say);
-        }
-
-        Student.prototype.sleep = function(question){
-            console.log(this.result+" " + question + " 已被注销");
-            Observer.remove(question,this.say);
-        }
-
-        var Teacher = function(){};
-        Teacher.prototype.ask = function(question){
-            console.log("问题是：" +question);
-            Observer.fire(question);
-        }
+           $tag('span')[0].innerHTML = InputStrategy.check("nickname",value)
+       }
     </script>
 </body>
 </html>
