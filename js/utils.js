@@ -575,7 +575,7 @@ Alert.prototype = {
         var Action = {
             create:function(data,view){
                 if (data.length) {
-                    for(var i = 0,len=data.length;i<lenl;i++){
+                    for(var i = 0,len=data.length;i<len;i++){
                         html += formateString(tpl[view],data[i])
                     }
                 }else{
@@ -596,11 +596,90 @@ Alert.prototype = {
         }
         //命令接口
         return function excute(msg){
-            //若msg.param不是数组，则将其转化为数组，因为apply方法要求第二个
+            //若msg.param不是数组，则将其转化为数组，因为apply方法要求第二个参数为数组
             msg.param = Object.prototype.toString.call(msg.param) === "[object Array]" ? msg.param : [msg.param];
-
+            //Action内部调用的方法引用this，确保作用域的this传入Action中
             Action[msg.command].apply(Action,msg.param);
         }
     })();
+
+
+    /**
+     * 绘图命令
+     * 将Canvas上下文引用对象安全地封装在一个命令对象内部
+     */
+
+    var CanvasCommand = (function(){
+        //获取Canvas
+        var canvas = document.getElementById("canvas");
+        var ctx = canvas.getContext("2d");
+
+        //内部方法对象
+        var Action = {
+            //填充色彩
+            fillStyle:function(c){
+                ctx.fillStyle = c
+            },
+            //填充矩形
+            fillRect:function(x,y,width,height){
+                ctx.fillRect(x,y,width,height);
+            },
+            //描边色彩
+            strokeStyle:function(c){
+                ctx.strokeStyle = c;
+            },
+            //描边矩形
+            strokeRect:function(x,y,width,height){
+                ctx.strokeRect(x,y,width,height);
+            },
+            //填充字体
+            fillText:function(text,x,y){
+                ctx.fillText(text,x,y);
+            },
+            //路径
+            beginPath:function(){
+                 ctx.beginPath();
+            },
+            //移动画笔
+            moveTo:function(x,y){
+                ctx.moveTo(x,y);
+            },
+            //画笔连线
+            lineTo:function(x,y){
+                ctx.lineTo(x,y);
+            },
+            //绘制弧线
+            arc:function(x,y,r,begin,end,dir){
+                 ctx.arc(x,y,r,begin,end,dir);
+            },
+            //填充
+            fill:function(){
+                ctx.fill()
+            },
+            //描边
+            stroke:function(){
+                ctx.stroke();
+            },
+        }
+        //接口
+        return {
+            excute:function(msg){
+                if (!msg) {
+                    return ;
+                }
+                if (msg.length) {
+                    for(var i = 0;len = msg.length;i++){
+                        arguments.callee(msg[i]);
+                    }
+                }else{
+                    //转化为数组
+                    msg.param = Object.prototype.toString.call(msg.param) === "[object Array]" ? msg.param : [msg.param];
+                }
+            }
+        }
+    })()
+    
+
+
 
     
