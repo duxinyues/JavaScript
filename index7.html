@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+       <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+      <ul id="container">
+          <li>1</li>
+          <li>2</li>
+          <li>3</li>
+          <li>4</li>
+      </ul>
+    <script>
+        /**
+ * 迭代器模式中的焦点轮播图
+ */
+//迭代器
+var Iterator = function(items,container){
+    //获取父容器
+    var container = container && document.getElementById(container) || document;
+
+    var items = container.getElementsByTagName(items);
+    var length = items.length;
+    var index = 0;
+    var splice=[].splice();
+    return {
+        first:function(){
+            //获取第一个元素
+            index = 0;
+            return items[index];
+        },
+        last:function(){
+            //获取最后一个元素
+            index = length-1;
+            return items[index];
+        },
+        pre:function(){
+            //获取上一个元素
+            if (--index > 0) {
+                return items[index]
+            }else{
+                index = 0;
+                return null;
+            }
+        },
+        next:function(){
+            //获取下一个元素
+            if (++index<length) {
+                return items[index];
+            }else{
+                index = length -1;
+                return null;
+            }
+        },
+        //获取元素
+        get:function(num){
+            index = num  >= 0 ? num % length : num % length + length;
+            return items[index]
+        },
+        //对每一个元素执行某一种方法
+        dealEach:function(fn){
+            var args = splice.call(arguments,1);
+            for(var i=0;i<length;i++){
+                fn.apply(items[i],args);
+            }
+        },
+        //针对某一个元素执行某一个方法
+        dealItem:function(num,fn){
+            fn.apply(this.get(num),splice.call(argsuments,2));
+        },
+        //排他方式处理某一个元素
+        exclusive:function(num,allFn,numFn){
+            this.dealEach(allFn);
+            if(Object.prototype.toString.call(num)==="[object ,Array]"){
+                for(var i=0,len=num.length;i<len;i++){
+                    this.dealItem(num[i],numFn);
+                }
+            }else{
+                this.dealItem(num,numFn);
+            }
+        }
+    }
+}
+
+        var dom = new Iterator('li','container');
+        console.log(dom.first());
+        console.log(dom.pre());
+        console.log(dom.next());
+        console.log(dom.get(139));
+
+        dom.dealEach(function(text,color){
+            this.innerHTML = text;
+            this.style.background = colorl;
+        },"test","pink");
+    </script>
+</body>
+</html>

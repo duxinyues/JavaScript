@@ -779,7 +779,7 @@ var Iterator = function(items,container){
             return items[index];
         },
         pre:function(){
-            //获取前一个元素
+            //获取上一个元素
             if (--index > 0) {
                 return items[index]
             }else{
@@ -796,9 +796,110 @@ var Iterator = function(items,container){
                 return null;
             }
         },
-        get:function(){},
-        dealEach:function(){},
-        dealItem:function(){},
-        exclusive:function(){}
+        //获取元素
+        get:function(num){
+            index = num  >= 0 ? num % length : num % length + length;
+        },
+        //对每一个元素执行某一种方法
+        dealEach:function(fn){
+            var args = splice.call(arguments,1);
+            for(var i=0;i<length;i++){
+                fn.apply(items[i],args);
+            }
+        },
+        //针对某一个元素执行某一个方法
+        dealItem:function(num,fn){
+            fn.apply(this.get(num),splice.call(argsuments,2));
+        },
+        //排他方式处理某一个元素
+        exclusive:function(num,allFn,numFn){
+            this.dealEach(allFn);
+            if(Object.prototype.toString.call(num)==="[object ,Array]"){
+                for(var i=0,len=num.length;i<len;i++){
+                    this.dealItem(num[i],numFn);
+                }
+            }else{
+                this.dealItem(num,numFn);
+            }
+        }
     }
 }
+
+var dom = new Iterator('li','container');
+console.log(dom.first());
+
+
+/**
+ * 数组迭代器
+ */
+
+  var eachArray = function(arr,fn){
+      var i = 0 ;
+      var len = arr.length;
+      for(;i<len;i++){
+          if(fn.call(arr[i],i,arr[i]) === false){
+              breack;
+          }
+      }
+  }
+/**
+ * 对象迭代器
+ */
+
+ var eachObject = function(obj,fn){
+     for(var i in obj){
+        if(fn.call(obj[i],i,obj[i])=== false){
+            breack;
+        }
+     }
+ }
+
+/**
+ * 同步变量迭代器
+ */
+
+var A ={
+    common:{},
+
+    client:{
+        user:{
+            username:"读心",
+            uid:"123"
+        }
+    },
+    server:{}
+}
+
+var AGetter = function(key){
+    if(!A){
+        return  undefined;
+    }
+    var result = A;
+    key = key.split(".");
+    for(var i = 0,len=key.length;i<len;i++){
+            if(result[key[i]]!== undefined){
+                result = result[key[i]];
+            }else{
+                return undefined;
+            }
+    }
+    return result;
+}
+
+/**
+ * 使用canvas处理图片像素数据
+ */
+
+ window.onload = function(){
+     var canvas = document.getElementsByTagName("canvas")[0];
+     var img = document.images[0];
+     var width = (canvas.width = img.width*2)/2;
+     var height = canvas.height = img.height;
+     var ctx = canvas.getContext("2d");
+
+     ctx.drawImage(img,0,0);
+
+     function dealImage(){};
+     dealImage('gray',0,0,width,height,255);
+     
+ }
