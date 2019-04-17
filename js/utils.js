@@ -605,81 +605,200 @@ Alert.prototype = {
 
 
     /**
-     * 绘图命令
-     * 将Canvas上下文引用对象安全地封装在一个命令对象内部
+     * 访问者模式
      */
-
-    var CanvasCommand = (function(){
-        //获取Canvas
-        var canvas = document.getElementById("canvas");
-        var ctx = canvas.getContext("2d");
-
-        //内部方法对象
-        var Action = {
-            //填充色彩
-            fillStyle:function(c){
-                ctx.fillStyle = c
-            },
-            //填充矩形
-            fillRect:function(x,y,width,height){
-                ctx.fillRect(x,y,width,height);
-            },
-            //描边色彩
-            strokeStyle:function(c){
-                ctx.strokeStyle = c;
-            },
-            //描边矩形
-            strokeRect:function(x,y,width,height){
-                ctx.strokeRect(x,y,width,height);
-            },
-            //填充字体
-            fillText:function(text,x,y){
-                ctx.fillText(text,x,y);
-            },
-            //路径
-            beginPath:function(){
-                 ctx.beginPath();
-            },
-            //移动画笔
-            moveTo:function(x,y){
-                ctx.moveTo(x,y);
-            },
-            //画笔连线
-            lineTo:function(x,y){
-                ctx.lineTo(x,y);
-            },
-            //绘制弧线
-            arc:function(x,y,r,begin,end,dir){
-                 ctx.arc(x,y,r,begin,end,dir);
-            },
-            //填充
-            fill:function(){
-                ctx.fill()
-            },
-            //描边
-            stroke:function(){
-                ctx.stroke();
-            },
-        }
-        //接口
+    var  Visitor = (function(){
         return {
-            excute:function(msg){
-                if (!msg) {
-                    return ;
-                }
-                if (msg.length) {
-                    for(var i = 0;len = msg.length;i++){
-                        arguments.callee(msg[i]);
-                    }
+            // 截取方法
+            splice:function(){
+                var args = Array.prototype.splice.call(arguments,1);
+                return Array.prototype.splice.apply(arguments[0],args);
+            },
+            //追加数据的方法
+            push:function(){
+
+                var len = arguments[0].length || 0;
+                //从原参数的第二个元素开始添加
+                var args = this.splice(arguments,1);
+
+                arguments[0].length = len + arguments.length - 1;
+                return Array.prototype.push.apply(arguments[0],args);
+            },
+            pop:function(){
+                return Array.prototype.pop.apply(arguments[0]);
+            }
+        }
+    })();
+
+    var s = new Object();
+    Visitor.push(s,1,3,8,4)
+    console.log(s.length)
+
+
+    /**
+     * 中介者模式
+     */
+    var Mediator = function(){
+        //消息对象
+        var _msg = {};
+        return {
+            /**
+             * 订阅消息的方法
+             * @param type 消息名称
+             * @param action 消息回调函数
+             */
+            register:function(type,action){
+                //检测该消息是否存在，若在则直接存入回调函数；若不存在该消息，则新建一个容器，再存放入回调函数中
+                if (_msg[type]) {
+                    _msg[type].push(action);
                 }else{
-                    //转化为数组
-                    msg.param = Object.prototype.toString.call(msg.param) === "[object Array]" ? msg.param : [msg.param];
+                    _msg[type] = [];
+                    _msg[type].push(action);
+                }
+            },
+            /**
+             * 发布信息
+             * @param type  消息名称
+             */
+            send:function(type){
+                //若已经被订阅了
+                if (_msg[type]) {
+                    for(var i =0,len = _msg[type].length;i<len;i++){
+                        _msg[type][i] && _msg[type][i]();
+                    }
                 }
             }
         }
-    })()
-    
+    }();
+
+    Mediator.register("dome",function(){
+        console.log(156484)
+    });
+
+    Mediator.send("dome");
+
+
+    /**
+     * 显示隐藏导航组件
+     * @param mod 模块
+     * @param tag  操作的标签
+     * @param showOrHide  显示或者隐藏
+     */
+
+    var showHideNavWidget = function(mod,tag,showOrHide){
+        var mod = document.getElementById(mod);
+        var tag = mod.getElementsByTagName(tag);
+        var showOrHide = (!showOrHide || showOrHide === 'hide') ? "hidden" : "visible";
+        //隐藏这些标签，但是依旧占据位置
+        for(var i=tag.length-1;i>=0;i--){
+            tag.style.visibility = showOrHide;
+        }
+    };
+
+    /**
+     *  test
+     */
+    (function(){
+        //隐藏
+        Mediator.register('hideAllNavNum',function(){
+            showHideNavWidget("collection_nav",'b',false);
+        });
+        //显示
+        Mediator.register("showAllNavNum",function(){
+            showHideNavWidget("collection_nav",'b',true);
+        })
+    })();
 
 
 
-    
+
+/**
+ * 备忘录模式
+ * 缓存数据
+ */
+var Page = function(){
+    //信息缓存
+    var cache = {};
+    /**
+     * @param page 页码
+     * @param fn 成功回调函数
+     */
+    return function(page,fn){
+        //判断该页数据是否在缓存中
+        if (cache[page]) {
+            showPage(page,cache[page]);
+            fn &&　fn();
+        }else{
+            //不存在则请求数据
+            $.post('./data/getdata.php',{
+                page:page
+            },function(res){
+                if (res.errNo == 0) {
+                    showPage(page,res.data);
+                    cache[page] = res.data;
+                    fn && fn();
+                }else{
+
+                }
+            })
+        }
+    }
+}();
+
+//test 点击下一页
+$("$next_page").click(function(){
+    var news = $("#news_content"),
+    page = $news.data("page");
+
+    Page(page,function(){
+        $news.data("page",page+1);
+    })
+});
+
+/**
+ * 迭代器模式中的焦点轮播图
+ */
+//迭代器
+var Iterator = function(items,container){
+    //获取父容器
+    var container = container && document.getElementById(container) || document;
+
+    var items = container.getElementsByTagName(items);
+    var length = items.length;
+    var index = 0;
+    var splice=[].splice();
+    return {
+        first:function(){
+            //获取第一个元素
+            index = 0;
+            return items[index];
+        },
+        last:function(){
+            //获取最后一个元素
+            index = length-1;
+            return items[index];
+        },
+        pre:function(){
+            //获取前一个元素
+            if (--index > 0) {
+                return items[index]
+            }else{
+                index = 0;
+                return null;
+            }
+        },
+        next:function(){
+            //获取下一个元素
+            if (++index<length) {
+                return items[index];
+            }else{
+                index = length -1;
+                return null;
+            }
+        },
+        get:function(){},
+        dealEach:function(){},
+        dealItem:function(){},
+        exclusive:function(){}
+    }
+}
