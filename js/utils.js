@@ -901,5 +901,33 @@ var AGetter = function(key){
 
      function dealImage(){};
      dealImage('gray',0,0,width,height,255);
-     
+
+ }
+
+ /**
+  * 获取兄弟元素
+  */
+ function getSublingName(node){
+     if(node.previousSibling){
+         var name = "", //兄弟元素名称
+             count = 1,//相邻兄弟元素中相同名称的元素个数
+             nodeName = node.nodeName,//原始节点
+             sibling = node.previousSibling; //上一个兄弟元素
+        while(sibling){
+            //如果节点是元素，并且该节点类型和上一个兄弟元素的类型相同，并且上一个兄弟元素存在
+            if(sibling.nodeType == 1 && sibling.nodeType === node.nodeType && sibling.nodeType){
+                //
+                if(nodeName == sibling.nodeName){
+                    name += ++count;
+                }else{
+                    count = 1;
+                    name += "|"+sibling.nodeName.toUpperCase();
+                }
+            }
+            sibling = sibling.previousSibling;
+        }
+        return name;
+     }else{
+         return "";
+     }
  }
