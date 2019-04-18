@@ -905,29 +905,69 @@ var AGetter = function(key){
  }
 
  /**
+  * 解释器模式
   * 获取兄弟元素
   */
- function getSublingName(node){
-     if(node.previousSibling){
-         var name = "", //兄弟元素名称
-             count = 1,//相邻兄弟元素中相同名称的元素个数
-             nodeName = node.nodeName,//原始节点
-             sibling = node.previousSibling; //上一个兄弟元素
-        while(sibling){
-            //如果节点是元素，并且该节点类型和上一个兄弟元素的类型相同，并且上一个兄弟元素存在
-            if(sibling.nodeType == 1 && sibling.nodeType === node.nodeType && sibling.nodeType){
-                //
-                if(nodeName == sibling.nodeName){
-                    name += ++count;
-                }else{
-                    count = 1;
-                    name += "|"+sibling.nodeName.toUpperCase();
-                }
-            }
-            sibling = sibling.previousSibling;
-        }
-        return name;
-     }else{
-         return "";
+
+var Interpreter = (function(){
+     function getSublingName(node) {
+         if (node.previousSibling) {
+             var name = "", //兄弟元素名称
+                 count = 1,//相邻兄弟元素中相同名称的元素个数
+                 nodeName = node.nodeName,//原始节点
+                 sibling = node.previousSibling; //上一个兄弟元素
+             while (sibling) {
+                 //如果节点是元素，并且该节点类型和上一个兄弟元素的类型相同，并且上一个兄弟元素存在
+                 if (sibling.nodeType == 1 && sibling.nodeType === node.nodeType && sibling.nodeType) {
+                     //
+                     if (nodeName == sibling.nodeName) {
+                         name += ++count;
+                     } else {
+                         count = 1;
+                         name += "|" + sibling.nodeName.toUpperCase();
+                     }
+                 }
+                 sibling = sibling.previousSibling;
+             }
+             return name;
+         } else {
+             return "";
+         }
      }
- }
+
+     /**
+      * @param node  目标节点
+      * @param wrap  容器节点
+      */
+     return  function(node,wrap){
+         var path = [];
+         var wrap = wrap || document;
+          if (node === wrap) {
+              //容器节点为元素
+              if (wrap.nodeType == 1) {
+                  path.push(wrap.nodeName.toUpperCase());
+              }
+              return path;
+          }
+          //当前节点的父元素不等于容器节点
+          if (node.parentNode !== wrap) {
+              //对当前节点的父节点进行遍历
+              path = arguments.callee(node.parentNode,wrap);
+          }else{
+              if (wrap.nodeType == 1) {
+                  path.push(wrap.nodeName.toUpperCase());
+              }
+          }
+
+          //获取元素的兄弟元素名称统计
+          var sublingName = getSublingName(node);
+
+          //节点为元素
+          if (node.nodeType == 1) {
+              //当前节点元素名称以及前面的兄弟元素名称统计
+              path.push(node.nodeName.toUpperCase() + sublingName);
+          }
+
+          return path;
+     }
+ })();
