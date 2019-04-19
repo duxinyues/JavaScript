@@ -13,7 +13,18 @@
     <span></span>
     <script src="js/Operate.js"></script>
     <script>
-      console.log(Dom("#D"))
+      console.log(Dom("#D"));
+      var demo  = Dom.extend({f:1},{s:2},{t:3});
+
+      console.log(demo);
+      
+      Dom.extend(Dom,{author:"duxin"})
+      console.log(Dom.author);
+
+      Dom.extend({names:" 读心"});
+      console.log(Dom.names);
+
+    
     </script>
 </body>
 </html>

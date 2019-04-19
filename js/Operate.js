@@ -35,3 +35,58 @@ Dom.fn = Dom.prototype = {
         return this;
     }
 }
+
+/**
+ * 对象拓展
+ */
+Dom.extend = Dom.fn.extend = function(){
+    //从第二参数开始拓展
+    var i =1;
+    var len = arguments.length;
+    var target = arguments[0];
+    var j;
+    //只传递 一个参数
+    if (i == len) {
+        target = this;
+        i--;
+    }
+
+    for(;i<len;i++){
+        for(j in arguments[i]){
+            target[j] = arguments[i][j];
+        }
+    }
+
+    return target
+
+}
+
+Dom.fn.extend({
+    on:(function(){
+        if (document.addEventListener) {
+            return function(type,fn){
+                var i = this.length - 1;
+                for(;i>=0;i--){
+                    this[i].addEventListener(type,fn,false);
+                }
+                return this;
+            }
+        }else if(document.attachEvent){
+            return function(type,fn){
+                var  i = this.length - 1 ;
+                for(; i>=0;i--){
+                    this[i].addEvent("on"+type,fn);
+                }
+                return this;
+            }
+        }else{
+            return function(type,fn){
+                var i = this.length - 1;
+                for(;i>=0;i--){
+                    this[i]['on'+type] = fn;
+                }
+                return this;
+            }
+        }
+    })()
+})
