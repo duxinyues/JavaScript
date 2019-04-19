@@ -149,6 +149,114 @@ var mongodb = require("mongedb");
 var config = require("./config").DB;
 
 var d = new mongodb.Db(
-    config.db,
-    new mongodb.Server()
-)
+    config.db,  //数据库名
+    new mongodb.Server(
+        config.host,  //主机
+        config.port, //端口号
+        {auto_reconnect:true}  //自动连接
+    ),
+    {safe:true}
+);
+
+exports.DB = function(DB){
+    return {
+        /**
+         * 插入数据
+         * @param data
+         * @param success
+         * @param fail  
+         */
+        insert:function(data,success,fail){
+            connect(col,function(col,db){
+                col.insert(data,function(err,docs){
+                    if(err){
+                        fail && fail(err);
+                    }else{
+                        success && success(docs);
+                    }
+                    db.close();
+                });
+            });
+        },
+        /**
+         * 删除数据
+         * @param data
+         * @param success 
+         * @param faill
+         */
+        remove:function(data,success,fail){
+            connect(col,function(col,db){
+                col.remove(data,function(err,len){
+                    if(err){
+                        fail && fail(err);
+                    }else{
+                        success && success(len);
+                    }
+                    db.close()
+                })
+            })
+        },
+        /**
+         * 更新数据
+         * @param con 
+         * @param doc
+         * @param success 
+         * @param faill
+         */
+        update:function(con,doc,success,fail){
+            connect(col,function(col,db){
+                col.update(con,doc,function(err,len){
+                    if(err){
+                        fail && fail(err);
+                    }else{
+                        success && success(len)
+                    }
+                    db.close();
+                })
+            })
+        },
+        /**
+         * 查找数据
+         * @param con
+         * @param success
+         * @param fail
+         */
+        find:function(con,success,fail){
+            connect(col,function(col,db){
+                col.find(con).toArray(function(err,docs){
+                    if(err){
+                        fail && fail(err)
+                    }else{
+                        success && success(docs);
+                    }
+                    db.close();
+                })
+            })
+        }
+    }
+}
+
+/**
+ * 打开数据库，操作集合
+ * @param col  集合明个
+ * @param fn  操作方法
+ */
+function connect(col,fn){
+    d.open(function(err,db){
+        if(err){
+            throw err;
+        }else{
+            db.collection(col,function(err,col){
+                if(err){
+                    throw err;
+                }else{
+                    fn && fn(col,db);
+                }
+            });
+        }
+    });
+}
+
+//test
+var book = DB("book");
+book.insert({title:"java",type:"js"})
