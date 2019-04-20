@@ -432,7 +432,9 @@ Alert.prototype = {
   /**
    * 外观模式简化元素的获取
    */
-
+   function $(id){
+       return document.getElementById(id);
+   }
    function $tag(tag,context){
        context = context || document;
        return context.getElementsByTagName(tag);
@@ -971,3 +973,79 @@ var Interpreter = (function(){
           return path;
      }
  })();
+
+ /**
+  * 节流模式
+  * 对于重复业务逻辑进行节流控制，执行最后一次操作，
+  * 并且取消其他的操作，从而提高性能
+  * 如下：
+  */
+//节流器
+var throttle = function(){
+    //获取第一个参数
+    var isClear = arguments[0];
+    var fn;
+
+    if (typeof isClear === "boolean") {
+        fn = arguments[1];
+        fn.__throttleID && clearTimeout(fn.__throttleID);
+    }else{
+        fn = isClear;
+        param = arguments[1];
+        var  p = extend({
+            context:null,
+            args:[],
+            time:300,
+        },param);
+
+        arguments.callee(true,fn);
+        fn.__throttleID = setTimeout(() => {
+            fn.apply(p.context,p.args);
+        }, p.time);
+    }
+}
+
+/**
+ * 创建浮层类
+ * 鼠标滑过时，显示对应的二维码图片
+ */
+var Layer = function(id){
+    this.container = $(id);
+    this.layer = $tag("div",container)[0];
+
+    this.lis = $tag("li",this.container);
+    this.imgs = $tag("img",this.container);
+    //绑定事件
+    this.bindEvent();
+}
+
+layer.prototype = {
+    //交互事件
+    bindEvent:function(){
+        //缓存当前对象
+        var that = this;
+        function hiddeLayer(){
+            that.layer.className = "";
+        }
+        function showLayer(){
+            that.layer.className = "show";
+        }
+
+        that.on(that.container,'mouseenter',function(){
+            throttle(true,hiddeLayer);
+            throttle(showLayer);
+        }).on(that.container,"mouseleave",function(){
+            //延迟浮层隐藏
+            throttle(hiddeLayer);
+            //清除显示浮层方法计时器
+            throttle(true,showLayer);
+        });
+    },
+
+    //事件绑定的方法
+    on:function(ele,type,fn){
+        ele.addEventListener ? ele.addEventListener(type,fn,false) : ele.attachEvent("on"+type,fn);
+        return this;
+    }
+}
+
