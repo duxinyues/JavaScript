@@ -1049,3 +1049,75 @@ layer.prototype = {
     }
 }
 
+/**
+ *简单模板模式,就是字符串拼接
+ 网站活动主题模板实例
+ */
+//命名空间
+var D = D || {};
+//主体展示区容器
+var root = document.getElementById("container");
+
+D.templateString = function(str,data){
+    return str.replace(/\{#(\w+)#\}/g,function(match,key){return typeof data[key] === undefined ? "" : data[key]});
+}
+//模板生成器
+D.View = function(name){
+    var v = {
+        code:`<pre><code>{#code#}</code></pre>`,
+        img:`<img src="{#src#}" alt="{#alt#}" title="{#title#}"/>`,
+        part:`<div id="{#id#}" class="{#class#}">{#part#}</div>`,
+        theme:[
+            `<div>
+                <h1>{#title#}</h1>
+                {#content#}
+            </div>`
+        ].join('')
+    }
+    if(Object.prototype.toString.call(name) === "[Object Array]"){
+        var tpl = "";
+        for(var i=0,len=name.length;i<len;i++){
+            tpl += arguments.callee(name[i]);
+        }
+
+        return tpl;
+    }else{
+        return v[name] ? v[name] : ('<'+name+'>{#'+name+'#></'+name+'>');
+    }
+}
+//创建视图的方法集合
+D.strategy = {
+    "listPart":function(data){
+       var s = document.createElement("div"),
+       ul = "",
+       ldata = data.data.li,
+       tpl = D.view(['h2','p','ul']),
+
+       liTpl = D.templateString(D.View("li"),{li:D.View(['strong','span'])});
+
+       data.id && (s.id = data.id);
+       for(var i =0,len = ldata.length;i<len;i++){
+           if(ldata[i].em || ldata[i].span){
+               ul += D.templateString(liTpl,ldata[i]);
+           }
+       }
+
+       data.data.ul = ul;
+       s.innerHTML = D.templateString(tpl,data.data);
+
+       D.root.appendChild(s)
+    },
+    "codePart":function(){},
+    "onlyTitle":function(){},
+    "guide":function(){}
+}
+//视图入口
+D.init = function(){
+    //根据传输的视图类型创建视图
+    this.strategy[data.type](data);
+}
+
+/**
+ * 惰性模式：减少每执行时的重复分支判断，通过对对象重定义来屏蔽原对象中的分支判断。
+ * 
+ */
