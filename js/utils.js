@@ -1512,5 +1512,92 @@ F.module = function(){
  * @param callback  参数为模板主函数
  */
 F.module = function(url,modDeps,modCallback){
-    
+    //把参数转化为数组
+    var args =[].slice.call(argsuments),
+        //获取模块构造函数（参数数组中最后一个参数成员）
+        callback = args.pop(),
+        //获取依赖模块（紧邻回调函数参数，，且数据类型为数组）
+        deps =(args.length && args[args.length-1] instanceof Array) ? args.pop() :[],
+        //模块url（模块ID）
+        url = args.length ? args.pop() : null,
+        //依赖模块序列
+        params = [],
+        //未加载的依赖模块数量统计
+        depsCount = 0,
+        //依赖模块序列的索引
+        i = 0,
+       // 依赖模块序列的长度
+        len;
+
+        if (len = deps.length) {
+            //遍历依赖模块
+            while (i<len) {
+                //闭包保存i
+                (function(i){
+                    //增加未加载的依赖模块
+                    depsCount++;
+                    loadModule(deps[i],function(mod){
+                        //依赖模块序列中添加依赖模块接口引用
+                        params[i] = mod;
+                        //依赖模块加载完成，依赖模块数量统计减一
+                        depsCount--;
+
+                        //若依赖模块全部加载
+                        if (depsCount===0) {
+                            //在模块缓存器中矫正该模块，并且执行构造函数
+                            setModule(url,params.callback);
+                        }
+                    });
+                })(i)
+                i++;
+            }
+        }else{
+            setModule(url,[],callback)
+        }
 }
+
+var moduleCache = {},
+    setModule = function(moduleName,params,callback){},
+    /***
+     * 异步加载依赖模块所在文件
+     * @param moduleName  模块；路径（ID）
+     * @param callback  模块加载完成回调函数
+     */
+    loadModule = function(moduleName,callback){
+        var _module ;
+        if (moduleCache[moduleName]) {
+            _module = moduleCache[moduleName];
+            if (_module.status === "loaded") {
+                setTimeout(callback(_module.exports), 0);
+            }else{
+                _module.onload.push(callback);
+            }
+        }else{
+            moduleCache[moduleName] = {
+                moduleName : moduleName,
+                status:'loading',
+                exports:null,
+                onload:[callback]
+            };
+            loadScript(getUrl(moduleName));
+        }
+    },
+    //获取文件路径
+    getUrl = function(moduleName){
+        return String(moduleName).replace(/\.js$/g,"")+".js";
+    },
+    loadScript = function(src){
+        var _script = document.createElement("script");
+        _script.type = "text/script";
+        _script.charset = "utf-8";
+        _script.async = true;
+        _script.src = src;
+        document.getElementsByTagName("head")[0].appendChild(_script);
+    };
+
+    /**
+     * 设置模块并且执行模块构造函数
+     * @param moduleName  模块ID名称
+     * @param params  依赖模块
+     * @param callback  模块构造函数
+     */
