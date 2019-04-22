@@ -1121,3 +1121,322 @@ D.init = function(){
  * 惰性模式：减少每执行时的重复分支判断，通过对对象重定义来屏蔽原对象中的分支判断。
  * 
  */
+//单体模式定义命名空间
+
+var A = {};
+
+A.on = function(dom,type,fn){
+    if (document.addEventListener) {
+        return function(dom,type,fn){
+            document.addEventListener(type,fn,false);
+        }
+    }else if(document.attachEvent){
+        return function(dom,type,fn){
+            dom.attachEvent("on"+type,fn)
+        }
+    }else{
+        return function(dom,type,fn){
+            dom["on"+type] = fn;
+        }
+    }
+    A.on(dom, type, fn)
+};
+
+//第二种方式
+A.on = function (dom, type, fn) {
+    if (document.addEventListener) {
+        return function (dom, type, fn) {
+            document.addEventListener(type, fn, false);
+        }
+    } else if (document.attachEvent) {
+        return function (dom, type, fn) {
+            dom.attachEvent("on" + type, fn)
+        }
+    } else {
+        return function (dom, type, fn) {
+            dom["on" + type] = fn;
+        }
+    }
+}();
+//两种方式都是让不必要的分支判断得到剥离。
+
+/**
+ * 创建XHR对象实例
+ */
+function createXHR(){
+    if (typeof XMLHttpRequest != "undefined") {
+        return new XMLHttpRequest();
+    }else if (typeof ActiveXObject != "undefined") {
+        if (typeof arguments.callee.activeXString != "string") {
+            var versions = ["MSXML2.XMLHttp.6.0","MSXML2.XMLHttp.3.0","MSXML2.XMLHttp"],
+                    i=0;
+                    len = versions.length;
+            for(;i<len;i++){
+                try {
+                    new ActiveXObject(versions[i]);
+                    arguments.callee.activeXString = versions[i];
+                    break;
+                } catch (ex) {}
+            }
+        }
+    }else{
+        throw new Error("您的浏览器并不支持Ajax");
+    }
+}
+
+//第一种优化方案
+var createXHR = (function(){
+    if (typeof XMLHttpRequest != "undefined") {
+        return function(){
+            return new XMLHttpRequest();
+        }
+    }else if (typeof ActiveXObject != "undefined") {
+        if (typeof arguments.callee.activeXString != "string") {
+            var versions = ["MSXML2.XMLHttp.6.0", "MSXML2.XMLHttp.3.0", "MSXML2.XMLHttp"],
+                i = 0;
+            len = versions.length;
+            for (; i < len; i++) {
+                try {
+                    new ActiveXObject(versions[i]);
+                    arguments.callee.activeXString = versions[i];
+                    break;
+                } catch (ex) { }
+            }
+        }
+    }else{
+        return function(){
+            throw new Error("您的浏览器并不支持Ajax")
+        }
+    }
+})();
+
+//第二种优化方案
+function  createXHR(){
+    if (typeof XMLHttpRequest !="undefined") {
+        createXHR = function(){
+            return new XMLHttpRequest();
+        }
+    }else if(typeof ActiveXObject != "undefined"){
+        createXHR = function(){
+            if (typeof arguments.callee.activeXString != "string") {
+                var versions = ["MSXML2.XMLHttp.6.0", "MSXML2.XMLHttp.3.0", "MSXML2.XMLHttp"],
+                    i = 0;
+                len = versions.length;
+                for (; i < len; i++) {
+                    try {
+                        new ActiveXObject(versions[i]);
+                        arguments.callee.activeXString = versions[i];
+                        break;
+                    } catch (ex) { }
+                }
+            }
+        }
+    }else{
+        createXHR = function(){
+            throw new Error("您的浏览器并不支持Ajax")
+        }
+    }
+    return createXHR;
+}
+
+
+/***
+ * 参与者模式
+ */
+var B = {};
+
+B.event.on = function(dom,type,fn,data){
+    if (dom.addEventListener) {
+        dom.addEventListener(type,function(){
+            fn.call(dom,e,data);
+        },false);
+    }else if (dom.attachEvent) {
+        dom.attachEvent("on" + type, function () {
+            fn.call(dom, e, data);
+        });
+    }
+}
+
+//函数绑定
+function bind(fn, context) {
+    var Slice = Array.prototype.slice,
+        args = Slice.call(arguments, 2);
+    return function () {
+        var addArgs = Slice.call(arguments),
+            AllArgs = addArgs.concat(args);
+
+        return fn.apply(context, AllArgs);
+    }
+}
+
+
+//函数柯里化
+function curry(fn){
+    var Slice = Array.prototype.slice,
+        args = Slice.call(arguments, 2);
+    return function () {
+        var addArgs = Slice.call(arguments),
+            AllArgs = addArgs.concat(args);
+
+        return fn.apply(context, AllArgs);
+    }
+}
+
+/***
+ * 等待者模式
+ */
+
+//等待对象
+var Waiter = function(){
+    var dfd = [],
+        doneArr = [],
+        failArr = [],
+        slice = Array.prototype.slice,
+        that = this;
+
+        //监控对象
+    var Primise = function(){
+        //监控对象是否解决成功状态
+        this.resolved = false;
+        //监控对象是否解决失败状态
+        this.rejected = false;
+    }
+    //监控对象
+    Primise.prototype = {
+        resolve:function(){
+            //设置当前的监控对象解决成功
+            this.resolved = true;
+            //没有监控对象就是直接取消执行
+            if (!dfd.length) {
+                return;
+            }
+            //遍历所有注册的监控对象
+            for(var i = dfd.length-1;i>=0;i--){
+                //要是任意一个监控对象没有被解决或者解决失败没救返回
+                if (dfd[i]&&!dfd[i].resolved || dfd[i].rejected) {
+                    return;
+                }
+                //清除监控对象
+                dfd.splice(i,1);
+            }
+            //执行解决成功回调函数
+            _exec(doneArr);
+        },
+        reject:function(){
+            //设置当前监控对象解决失败
+            this.rejected = true;
+            //不存在监控对象就取消执行
+            if (!dfd.length) {
+                return;
+            }
+            dfd.slice(0);
+            _exec(failArr)
+        }
+    }
+    //创建监控对象
+    that.Deferred = function(){
+        return new Primise();
+    }
+    //回调执行方法
+    function _exec(arr){
+        var i =0,
+            len = arr.length;
+        for(;i<len;i++){
+            try {
+                arr[i]  && arr[i]();
+            } catch (e) {}
+        }
+    }
+    //监控异步方法
+    that.when = function(){
+        dfd = slice.call(arguments);
+        var i = dfd.length;
+        for(--i;i>=0;i--){
+            if (!dfd || dfd[i].resolved || dfd[i].rejected || !dfd[i] instanceof Primise) {
+                dfd.splice(i,1)
+            }
+        }
+        return that;
+    };
+    //解决成功回调函数添加方法
+    that.done = function(){
+        doneArr = doneArr.concat(slice.call(arguments));
+        return that;
+    };
+    //解决失败回调函数添加方法
+    that.fail = function(){
+        failArr = failArr.concat(slice.call(arguments));
+        return that;
+    };
+}
+
+//把原生ajax方法封装成等待者模式
+var ajaxGet = function(url,success,fail){
+    var xhr = new XMLHttpRequest();
+    var dtd = waiter.Deferred();
+    xhr.onload =   function(event){
+        if ((xhr.status>=200 && xhr.status<300) || xhr.status == 304) {
+            success && success()
+            dtd.resolve();
+        }else{
+            dtd.reject();
+            fail && fail();
+        }
+    };
+    xhr.open("get",url,true);
+    xhr.send(null);
+}
+
+
+/***
+ * 同步模块模式
+ */
+//定义模块管理单体对象
+var F = F || {};
+
+/**
+ * 定义模块方法
+ * @param str 模块路由
+ * @param fn 模块方法
+ */
+
+ F.fefine = function(str,fn){
+    //解析路由
+    var parts = str.split('.'),
+        old = parent = this, //old为当前模块的祖父模块。parent是当前模块的父模块
+        i =len = 0;
+        //第一个模式是模块管理器单体对象，则移除
+        if (parts[0]==="F") {
+            parts = parts.slice(1);
+        }
+        //屏蔽对define和Module模块方法的重写
+        if (parts[0] === "define" || parts[0] === "module") {
+            return;
+        }
+
+        //遍历路由模块并且定义每层模块
+        for(len=parts.length;i<len;i++){
+            if (typeof parent[parts[i]] === "undefined") {
+                parent[parts[i]] = {};
+            }
+            //缓存下一层级的祖父模块
+            old = parent;
+
+            //缓存下一层级的父模块
+            parent = parent[parts[i]];
+        }
+        if (fn) {
+            old[parts[--i]] = fn();
+        }
+        return this;
+ }
+
+ //创建模块
+
+ F.define("string",function(){
+     return {
+         trim:function(str){
+             return str.replace(/^\s+|\s+$/g,"")
+         }
+     }
+ });
