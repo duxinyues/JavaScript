@@ -1557,7 +1557,6 @@ F.module = function(url,modDeps,modCallback){
 }
 
 var moduleCache = {},
-    setModule = function(moduleName,params,callback){},
     /***
      * 异步加载依赖模块所在文件
      * @param moduleName  模块；路径（ID）
@@ -1601,3 +1600,74 @@ var moduleCache = {},
      * @param params  依赖模块
      * @param callback  模块构造函数
      */
+    setModule = function(moduleName,params,callback){
+        var _module,fn;
+        if (moduleCache[moduleName]) {
+            _module = moduleCache[moduleName];
+            _module.status = "loaded";
+
+            _module.exports = callback ? callback.apply(_module,params) : null;
+            while (fn = _module.onload.shift()) {
+                fn(_module.exports);
+            }
+        }else{
+            callback && callback.apply(null,params);
+        }
+    }
+//测试
+    F.module("lib/dom",function(){
+        return {
+            g:function(id){
+                return document.getElementById(id);
+            },
+            html:function(id,html){
+                if (html) {
+                    this.g(id).innerHTML = html;
+                }else{
+                    return this.g(id).innerHTML;
+                }
+            }
+        }
+    });
+
+
+
+/****
+ * Widget 模式
+ * 视图模块化
+ */
+//模板引擎模板
+F.module("lib/template",function(){
+    /**
+     * 模板引擎 处理数据与编译模板入口
+     * @param  str    模板容器ID  模板字符串
+     * @param  data  渲染数据
+     */
+    var _TplEngine =  function(str,data){
+        //
+        if (data instanceof Array) {
+            var html = "",
+                i = 0,
+                len = data.length;
+            for(;i<len;i++){
+                html += _getTpl(str)(data[i]);
+            }
+            return html;
+        }else{
+            return _getTpl(str)(data);
+        }
+    },
+    /**
+     * 获取模板
+     * @param  str 模板容器ID，或者模板字符串
+     */
+        _getTpl =  function(str){
+            var ele = document.getElementById(str);
+        },
+        //处理模板
+        _dealTpl = function(){},
+        //编译执行
+        _compileTpl = function(){},
+    return _TplEngine;
+});
+
