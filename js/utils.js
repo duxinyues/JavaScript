@@ -1400,7 +1400,7 @@ var F = F || {};
  * @param fn 模块方法
  */
 
- F.fefine = function(str,fn){
+ F.define = function(str,fn){
     //解析路由
     var parts = str.split('.'),
         old = parent = this, //old为当前模块的祖父模块。parent是当前模块的父模块
@@ -1440,3 +1440,77 @@ var F = F || {};
          }
      }
  });
+//获取元素方法dom(),html()设置元素内容
+ F.define("dom",function(){
+     var $ = function(id){
+         $.dom = document.getElementById(id);
+         return $;
+     }
+     $.html = function(html){
+         if (html) {
+             this.dom.innerHTML = html;
+             return this;
+         }else{
+             return this.dom.innerHTML;
+         }
+     }
+     return $;
+ });
+
+ //添加addclass方法
+ F.dom.addClass = function(type,fn){
+     return  function(className){
+         if (!~this.dom.className.indexOf(className)) {
+             this.dom.className += " " + className;
+         }
+     }
+ }();
+
+//模块调用方法
+F.module = function(){
+    var args = [].slice.call(arguments),
+        fn = args.pop(),
+        parts = args[0] && args[0] instanceof Array ? args[0] : args,
+        modules =[],
+        modIDs = '',
+        i=0,
+        ilen = parts.length,
+        parent,j,jlen;
+
+        while (i<ilen) {
+            if (typeof parts[i] === "string") {
+                parent = this;
+                modIDs = parts[i].replace(/^F\./,"").split('.');
+                for(j=0,jlen=modIDs.length;j<jlen;j++){
+                    parent = parent[modIDs[j]] || false;
+                }
+
+                modules.push(parent);
+            }else{
+                modules.push(parts[i]);
+            }
+            i++;
+        }
+        fn.apply(null,modules);
+}
+
+/***
+ * 异步模块
+ */
+//在闭包中传入模块管理器对象F
+~(function(F){
+    //模块缓存器，存储已经创建的模块
+    var moduleCache = {}
+})((function(){
+    return window.F = {};
+})());
+
+/***
+ * 创建或者调用模块方法
+ * @param url  参数为模块的url
+ * @param deps  参数为依赖模块
+ * @param callback  参数为模板主函数
+ */
+F.module = function(url,modDeps,modCallback){
+    
+}
