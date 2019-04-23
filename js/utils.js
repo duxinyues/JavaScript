@@ -1663,11 +1663,43 @@ F.module("lib/template",function(){
      */
         _getTpl =  function(str){
             var ele = document.getElementById(str);
+            if (ele) {
+                //若是input或者textarea元素就获取该元素的value值，否则获取元素内容。
+                var html = /^(textarea | input)$/i.test(ele.nodeName) ? ele. value : ele.innerHTML;
+                //编译模板
+                return _compileTpl(html)
+            }else{
+                //编译模板
+                return _compileTpl(str);
+            }
         },
         //处理模板
-        _dealTpl = function(){},
-        //编译执行
-        _compileTpl = function(){},
+        _dealTpl = function(str){
+             //左右分隔符
+            var _left = '{%',
+                _right = '%}';
+            return String(str)
+               // 转义标签内的<,>
+                .replace(/&lt;/g,'<')
+                
+                .replace(/&gt;/g,">")
+                //过滤回车符、制表符和空格符
+                .replace(/[\r\t\n]/g,'')
+                //替换内容
+                .replace(new RegExp(_left+'=(.*?)'+_right,'g'),"',typeof($l)==='undefined'?'' : $l,'")
+                //替换左边分隔符
+                .replace(new RegExp(_left,'g'),"');")
+                //替换右边分隔符
+                .replace(new RegExp(_right,'g'),"template_array.push('");  
+        },
+        /**
+         * 编译执行
+         * @param str  模板数据
+         */
+        _compileTpl = function(str){
+          var fnBody= "var template_array = [];\n var fn = (function(data){\nvar template_key = '';\nfor(key in data){\ntemplate_key += ('var ' + key+'=data[\"'+key+'\"];');\n}\neval(template_key);\ntemplate_array.push('"+=_dealTpl(str)+"');\ntemplate_key = null;\n})(templateData);\nfn = null;\nreturn template_array.join('');";
+          return new Function("templateData",fnBody);
+        },
     return _TplEngine;
 });
 
