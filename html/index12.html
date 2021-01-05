@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+       <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script >
+        var Waiter = function(){
+        var dfd = [],
+        doneArr = [],
+        failArr = [],
+        slice = Array.prototype.slice,
+        that = this;
+
+        //监控对象
+        var Primise = function(){
+        //监控对象是否解决成功状态
+        this.resolved = false;
+        //监控对象是否解决失败状态
+        this.rejected = false;
+        }
+        //监控对象
+        Primise.prototype = {
+        resolve:function(){
+        //设置当前的监控对象解决成功
+        this.resolved = true;
+        //没有监控对象就是直接取消执行
+        if (!dfd.length) {
+        return;
+        }
+        //遍历所有注册的监控对象
+        for(var i = dfd.length-1;i>=0;i--){
+        //要是任意一个监控对象没有被解决或者解决失败没救返回
+        if (dfd[i]&&!dfd[i].resolved || dfd[i].rejected) {
+        return;
+        }
+        //清除监控对象
+        dfd.splice(i,1);
+        }
+        //执行解决成功回调函数
+        _exec(doneArr);
+        },
+        reject:function(){
+        //设置当前监控对象解决失败
+        this.rejected = true;
+        //不存在监控对象就取消执行
+        if (!dfd.length) {
+        return;
+        }
+        dfd.slice(0);
+        _exec(failArr)
+        }
+        }
+        //创建监控对象
+        that.Deferred = function(){
+        return new Primise();
+        }
+        //回调执行方法
+        function _exec(arr){
+        var i =0,
+        len = arr.length;
+        for(;i<len;i++){
+            try
+            {
+            arr[i]
+            &&
+            arr[i]();
+            }
+            catch
+            (e)
+            {}
+            }
+            } //监控异步方法
+            that.when=function(){
+            dfd=slice.call(arguments);
+            var
+            i=dfd.length;
+            for(--i;i
+        >=0;i--){
+            if (!dfd || dfd[i].resolved || dfd[i].rejected || !dfd[i] instanceof Primise) {
+            dfd.splice(i,1)
+            }
+            }
+            return that;
+            };
+            //解决成功回调函数添加方法
+            that.done = function(){
+            doneArr = doneArr.concat(slice.call(arguments));
+            return that;
+            };
+            //解决失败回调函数添加方法
+            that.fail = function(){
+            failArr = failArr.concat(slice.call(arguments));
+            return that;
+            };
+            }
+        </script>
+       <script>
+
+        var waiter = new Waiter()
+         var first = function(){
+             var dtd = waiter.Deferred();
+             setTimeout(() => {
+                 console.log(11);
+                 dtd.resolve()
+             }, 5000);
+             return  dtd;
+         }();
+
+         var second = function(){
+             var dtd = waiter.Deferred();
+             setTimeout(() => {
+                 console.log(2222);
+                 dtd.resolve();
+             }, 10000);
+             return dtd;
+         }();
+
+         waiter.when(first,second)
+               .done(function(){
+                   console.log(999)
+               },function(){
+                   console.log(888)
+               })
+               .fail(function(){
+                   console.log(555)
+               })
+       </script>
+</body>
+</html>

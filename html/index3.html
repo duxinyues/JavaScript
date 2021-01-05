@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <input type="text">
+    <input type="submit">
+    <span></span>
+    <script src="js/utils.js"></script>
+    <script>
+       $tag('input')[1].onclick = function(){
+           //获取输入的内容
+           var value = $tag('input')[0].value;
+
+           $tag('span')[0].innerHTML = InputStrategy.check("nickname",value)
+       }
+    </script>
+</body>
+</html>

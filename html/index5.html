@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+       <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+      <div id="title"></div>
+      <div id="product"></div>
+    <script src="js/utils.js"></script>
+    <script>
+        var productData = [
+                {
+                    src: 'http://img3.imgtn.bdimg.com/it/u=2939415758,1641104711&fm=11&gp=0.jpg',
+                    text: "现代风格办法"
+                }, {
+                    src: "http://img3.imgtn.bdimg.com/it/u=1750097060,2122861315&fm=26&gp=0.jpg",
+                    text: "xndkjf"
+                }
+            ];
+            var titleData = {
+                title: "夏日",
+                tips: "dfghdflhjfklg"
+            };
+
+            viewCommand({
+                command:'display',
+                param:['title',titleData,'title']
+            });
+
+             viewCommand({
+                 command:"display",
+                 param:['product', productData,"product"]
+             });
+    </script>
+</body>
+</html>

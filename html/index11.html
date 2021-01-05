@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+       <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+       <script src="js/DAO.js"></script>
+       <script>
+           var LS = new BaseLocalStorage("LS_");
+           LS.set("a","duxin",function(){
+               console.log(arguments)
+           });
+
+           LS.get("a",function(){
+               console.log(arguments)
+           })
+           LS.remove("a",function(){console.log(arguments)});
+            LS.remove("a", function () { console.log(arguments) });
+           LS.get("a", function () { console.log(arguments) });
+       </script>
+</body>
+</html>

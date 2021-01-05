@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+       <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="test">sxhdfghdhfghfg</div>
+    <script >
+      var F = F || {};
+
+      /**
+      * 定义模块方法
+      * @param str 模块路由
+      * @param fn 模块方法
+      */
+
+      F.define = function(str,fn){
+      //解析路由
+      var parts = str.split('.'),
+      old = parent = this, //old为当前模块的祖父模块。parent是当前模块的父模块
+      i =len = 0;
+      //第一个模式是模块管理器单体对象，则移除
+      if (parts[0]==="F") {
+      parts = parts.slice(1);
+      }
+      //屏蔽对define和Module模块方法的重写
+      if (parts[0] === "define" || parts[0] === "module") {
+      return;
+      }
+
+      //遍历路由模块并且定义每层模块
+      for(len=parts.length;i<len;i++){
+          if
+          (typeof
+          parent[parts[i]]==="undefined"
+          )
+          {
+          parent[parts[i]]={};
+          } //缓存下一层级的祖父模块
+          old=parent; //缓存下一层级的父模块
+          parent=parent[parts[i]];
+          }
+          if
+          (fn)
+          {
+          old[parts[--i]]=fn();
+          }
+          return
+          this;
+          } //创建模块
+         F.define("string",function(){
+         return {
+         trim:function(str){
+         return str.replace(/^\s+|\s+$/g,"")
+         }
+         }
+         });
+          console.log(F.string.trim("test"))
+
+          F.define("dom",function(){
+          var $ = function(id){
+          $.dom = document.getElementById(id);
+          return $;
+          }
+          $.html = function(html){
+          if (html) {
+          this.dom.innerHTML = html;
+          return this;
+          }else{
+          return this.dom.innerHTML;
+          }
+          }
+          return $;
+          });
+          F.dom('test').html(154654);
+          console.log(F.dom('test').html());
+
+          //添加addclass方法
+          F.dom.addClass = function(type,fn){
+          return function(className){
+          if (!~this.dom.className.indexOf(className)) {
+          this.dom.className += " " + className;
+          }
+          }
+          }();
+
+          F.dom('test').addClass("tghfgh");
+    //模块调用方法
+    F.module = function () {
+        var args = [].slice.call(arguments),
+            fn = args.pop(),
+            parts = args[0] && args[0] instanceof Array ? args[0] : args,
+            modules = [],
+            modIDs = '',
+            i = 0,
+            ilen = parts.length,
+            parent, j, jlen;
+
+        while (i < ilen) {
+            if (typeof parts[i] === "string") {
+                parent = this;
+                modIDs = parts[i].replace(/^F\./, "").split('.');
+                for (j = 0, jlen = modIDs.length; j < jlen; j++) {
+                    parent = parent[modIDs[j]] || false;
+                }
+
+                modules.push(parent);
+            } else {
+                modules.push(parts[i]);
+            }
+            i++;
+        }
+        fn.apply(null, modules);
+    }
+
+    F.module(['dom',document],function( dom,doc){
+        dom('test').html("new addd");
+        doc.body.style.background = "red"
+    });
+
+    F.module("dom","string.trim",function(dom,trim){
+        var html = dom("test").html();
+        var str = trim(html);//除去字符串的空白部分
+        console.log(html+"****"+str)
+
+    })
+    </script>
+</body>
+</html>
