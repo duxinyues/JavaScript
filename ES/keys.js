@@ -21,12 +21,6 @@ var objArr = [
     },
 ];
 
-var obj = {};
-objArr = objArr.reduce(function (item, next) {
-
-    obj[next.id] ? '' : obj[next.id] = true && item.push(next);
-
-    return item;
-
-}, []);
-
+for (const iterator of objArr) {
+    console.log(iterator)
+}
