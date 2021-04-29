@@ -19,6 +19,10 @@
   },
   "homepage": "https://github.com/qingzhuxin/JavaScript#readme",
   "dependencies": {
-    "module": "^1.2.5"
+    "ahooks": "^2.0.0",
+    "lodash.debounce": "^4.0.8",
+    "module": "^1.2.5",
+    "react-sortablejs": "^5.0.0",
+    "sortablejs": "^1.12.0"
   }
 }
