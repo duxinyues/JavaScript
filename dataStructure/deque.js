@@ -1,3 +1,11 @@
+/*
+ * @fileName: 双端队列
+ * @Author: duxinyue
+ * @Date: 2021-04-26 23:22:52
+ * @LastEditors: duxinyue
+ * @LastEditTime: 2021-04-29 13:32:25
+ * @FilePath: \JavaScript\数据结构和算法\deque.js
+ */
 /**
  * 双端队列
  * 允许在前端和后端删除和添加元素的队列
