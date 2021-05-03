@@ -3,8 +3,8 @@
  * @Author: duxinyue
  * @Date: 2021-04-26 23:22:52
  * @LastEditors: duxinyue
- * @LastEditTime: 2021-04-29 13:32:25
- * @FilePath: \JavaScript\数据结构和算法\deque.js
+ * @LastEditTime: 2021-05-03 23:18:19
+ * @FilePath: \JavaScript\dataStructure\deque.js
  */
 /**
  * 双端队列
@@ -15,7 +15,7 @@
 
 class Deque {
     constructor() {
-        this.count = 0;// 队列的大小
+        this.count = 0; // 队列的大小
         this.lowestCount = 0; // 追踪队列的第一个元素
         this.items = {}; // 存储队列的元素
     }
@@ -24,50 +24,66 @@ class Deque {
         if (this.isEmpty()) {
             this.addBack(element)
         } else if (this.lowestCount > 0) {
-            this.lowestCount--;
-            this.items[this.lowestCount] = element
+            this.items[--this.lowestCount] = element
         } else {
-            for (let index = this.count; index > 0; index--) {
-                this.items[index] = this.items[i - 1]
+            for (let index = this.count; index > 0; --index) {
+                this.items[index] = this.items[index - 1]
             }
+            this.count++;
+            this.lowestCount = 0;
+            this.items[0] = element
         }
-        this.count++;
-        this.lowestCount = 0;
-        this.items[0] = element
     }
     // 在队列末尾添加元素
     addBack(element) {
-        if (this.isEmpty()) {
-            this.addFront(element)
-        } else if (this.lowestCount > 0) {
-            this.lowestCount++;
-            this.items[this.lowestCount] = element
-        } else {
-            for (let index = this.count; index > 0; index--) {
-                this.items[index] = this.items[i - 1]
-            }
-        }
-        this.count++;
-        this.lowestCount = 0;
-        this.items[0] = element
+        this.items[this.count++] = element
     }
     // 从队列开头删除元素
-    removeFront() { }
+    removeFront() {
+        if (this.isEmpty()) {
+            return undefined;
+        }
+        const first_item = this.items[this.lowestCount];
+        delete this.items[this.lowestCount];
+        this.lowestCount++;
+        return first_item
+    }
     // 从队列末尾删除元素
-    removeBack() { }
+    removeBack() {
+        if (this.isEmpty()) {
+            return undefined
+        }
+        const last_item = this.items[this.count - 1];
+        delete this.items[this.count - 1];
+        this.count--;
+        return last_item;
+
+    }
     // 返回队列的第一个元素
-    peekFront() { }
+    peekFront() {
+        if (this.isEmpty()) {
+            return undefined
+        }
+        return this.items[this.lowestCount]
+    }
     // 返回队列的最后一个元素
-    peekBack() { }
+    peekBack() {
+        if (this.isEmpty()) {
+            return undefined
+        }
+        return this.items[this.count - 1]
+    }
     // 队列是否为空
     isEmpty() {
-        return this.count === 0;
+        return this.count - this.lowestCount === 0;
     }
 
     //队列大小
-    // size() {
-    //     return this.count - this.lowestCount
-    // }
+    size() {
+        console.log(this.count)
+        console.log(this.lowestCount)
+        return this.count - this.lowestCount
+    }
 
     // 清空队列
     clear() {
@@ -90,7 +106,16 @@ class Deque {
     }
 }
 
-const  deque = new Deque();
+const deque = new Deque();
 
 deque.addFront("duxin")
-console.log(deque.isEmpty())
+deque.addFront("duxin2")
+deque.addFront("duxin3")
+deque.size()
+// console.log(deque.size())
+// console.log(deque.isEmpty())
+
+// console.log(deque.peekFront())
+// console.log(deque.peekBack())
+console.log(deque.count)
+console.log(deque.items)
