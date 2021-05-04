@@ -71,8 +71,6 @@ class CircularLinkedList extends LinkedList {
         return undefined
     }
 }
-
-
 const circularList = new CircularLinkedList();
 console.log("====循环链表=====")
 circularList.insert(100, 0)
