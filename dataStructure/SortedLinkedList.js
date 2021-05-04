@@ -3,7 +3,7 @@
  * @Author: duxinyue
  * @Date: 2021-05-04 12:26:55
  * @LastEditors: duxinyue
- * @LastEditTime: 2021-05-04 19:21:24
+ * @LastEditTime: 2021-05-04 19:29:19
  * @FilePath: \JavaScript\dataStructure\SortedLinkedList.js
  * @Description: 有序链表的数据结构
  */
@@ -36,6 +36,7 @@ class SortedLinkedList extends LinkedList {
         const pos = this.getIndexNextSortedElement(element);
         return super.insert(element, pos)
     }
+    // 将元素插入正确位置
     getIndexNextSortedElement(element) {
         let current = this.head;
         let index = 0
@@ -49,3 +50,12 @@ class SortedLinkedList extends LinkedList {
         return index
     }
 }
+const sortList = new SortedLinkedList();
+console.log("=====有序链表======");
+sortList.insert("读心")
+sortList.insert("青竹悦");
+sortList.insert("青竹悦123");
+sortList.insert("青竹悦456");
+sortList.insert("青竹悦789");
+console.log(sortList.count);
+console.log(sortList.head);
