@@ -22,7 +22,7 @@ class DoublyNode extends Node {
     }
 }
 
-class DoublyLinkedList extends LinkedList {
+export class DoublyLinkedList extends LinkedList {
     constructor(equalsFn = defaultEquals) {
         super(equalsFn);
         this.tail = undefined; // 保存最后一个元素的引用
