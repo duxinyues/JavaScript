@@ -3,7 +3,7 @@
  * @Author: duxinyue
  * @Date: 2021-05-05 20:27:47
  * @LastEditors: duxinyue
- * @LastEditTime: 2021-05-05 20:58:14
+ * @LastEditTime: 2021-05-05 22:16:53
  * @FilePath: \JavaScript\dataStructure\Set\Set.js
  * @Description: 
  */
@@ -13,7 +13,7 @@
 // }
 
 
-export class Set {
+export class _Set {
     constructor() {
         this.items = {};
     }
@@ -64,5 +64,71 @@ export class Set {
     // 返回一个包含集合中所有元素的数组
     values() {
         return Object.values(this.items)
+    }
+    // 并集
+    union = (otherSet) => {
+        const unionSet = new _Set();
+        this.values().forEach(element => unionSet.add(element));
+        otherSet.values().forEach((element) => unionSet.add(element));
+        return unionSet;
+    }
+    // 交集
+    intersection(otherSet) {
+        // const intersectionSet = new _Set();
+        // const values = this.values();
+
+        // for (let index = 0; index < values.length; index++) {
+        //     if (otherSet.has(values[index])) {
+        //         intersectionSet.add(values[index])
+        //     }
+        // }
+
+        // return intersectionSet;
+
+        const intersectionSet = new _Set();
+        const values = this.values();
+        const otherSetValues = otherSet.values();
+        let biggerSet = values;
+        let smallerSet = otherSetValues;
+        if (otherSetValues.length - values.length) {
+            biggerSet = otherSetValues;
+            smallerSet = values;
+        }
+        smallerSet.forEach((value) => {
+            if (biggerSet.includes(value)) {
+                intersectionSet.add(value)
+            }
+        });
+        return intersectionSet
+    }
+    // 差集
+    difference(otherSet) {
+        const differenceSet = new _Set();
+        this.values().forEach((value) => {
+            if (!otherSet.has(value)) {
+                differenceSet.add(value)
+            }
+        })
+        return differenceSet;
+    }
+
+    // 子集
+    isSubsetOf(otherSet) {
+        if (this.size() > otherSet.size()) {
+            return false;
+        }
+        let isSubset = this.values().every(value => {
+            return otherSet.has(value)
+        })
+
+        // this.values().every(value => {
+        //     if (!otherSet.has(value)) {
+        //         isSubset = false;
+        //         return false;
+        //     }
+        //     return true;
+        // })
+
+        return isSubset
     }
 }
