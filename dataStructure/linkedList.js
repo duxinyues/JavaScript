@@ -14,7 +14,7 @@ import {
     Node
 } from "../models/linked-list-models.js"
 
-export default class LinkedList {
+export  class LinkedList {
     constructor(equalsFn = defaultEquals) {
         this.count = 0; //存储链表元素的数量
         this.head = undefined; // 第一个元素的引用
