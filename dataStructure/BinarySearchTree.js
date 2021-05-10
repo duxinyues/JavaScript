@@ -129,7 +129,7 @@ export class BinarySearchTree {
     
             return node;
         }
-    }
+    }    
 
     insertNode(node, key) {
         if (this.compareFn(key, node.key) === Compare.LESS_THAN) {
