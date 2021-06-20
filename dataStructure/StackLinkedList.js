@@ -1,9 +1,9 @@
 /*
  * @FileName: 
- * @Author: duxinyue
+ * @Author: 1638877065@qq.com
  * @Date: 2021-05-04 19:44:24
- * @LastEditors: duxinyue
- * @LastEditTime: 2021-05-04 20:07:24
+ * @LastEditors: 1638877065@qq.com
+ * @LastEditTime: 2021-06-20 22:06:52
  * @FilePath: \JavaScript\dataStructure\StackLinkedList.js
  * @Description: 
  */

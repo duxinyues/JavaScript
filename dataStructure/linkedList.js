@@ -128,6 +128,7 @@ export  class LinkedList {
     }
 
     isEmpty() {
+        
         return this.size() === 0
     }
 
