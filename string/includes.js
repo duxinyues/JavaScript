@@ -17,3 +17,4 @@ console.log(str.includes("f"));
 console.log(str.startsWith("f"));
 //  endWith()，给定参数是否在字符串的尾部
 console.log(str.endsWith("b"));
+
