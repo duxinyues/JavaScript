@@ -1,7 +1,7 @@
 <!--
  * @Author: yongyuan at <yongyuan253015@gmail.com>
  * @Date: 2021-07-24 14:02:58
- * @LastEditTime: 2021-07-24 23:20:28
+ * @LastEditTime: 2021-07-24 23:35:33
  * @LastEditors: yongyuan at <yongyuan253015@gmail.com>
  * @Description: 数据类型
  * @FilePath: \JavaScript\data-type\JavaScript基本数据类型.md
@@ -82,5 +82,7 @@ null是JavaScript的关键字，undefined是JavaScript中的一个全局变量�
 3、parseFloat()，解析一个字符串，返回一个浮点数
 
  Number()函数转换的是传入的整个值，并不是像parseInt()函数和parseFloat()函数一样会从首位开始匹配符合条件的值。如果整个值不能被完整转换，则会返回“NaN”。
+
+ isNaN()函数在判断是否为NaN时，需要先进行数据类型转换，只有在无法转换为数字时才会返回“true”；· Number.isNaN()函数在判断是否为NaN时，只需要判断传入的值是否为NaN，并不会进行数据类型转换。
 
 ## 应用数据类型   
