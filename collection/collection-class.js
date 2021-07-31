@@ -1,7 +1,7 @@
 /*
  * @Author: yongyuan at <yongyuan253015@gmail.com>
  * @Date: 2021-07-30 23:21:43
- * @LastEditTime: 2021-07-31 15:18:13
+ * @LastEditTime: 2021-07-31 17:39:38
  * @LastEditors: yongyuan at <yongyuan253015@gmail.com>
  * @Description: 集合的类声明
  * @FilePath: \JavaScript\collection\collection-class.js
@@ -63,8 +63,35 @@ class Set {
     // 交集
     intersection(otherSet) {
         const intersectionSet = new Set();
-        const  values = this.values();
-        
+        const values = this.values();
+        const otherValues = otherSet.values();
+
+        let biggerSet = values;
+        let smallerSet = otherValues;
+
+        if (otherValues.length - values.length > 0) {
+            biggerSet = otherValues;
+            smallerSet = values;
+        }
+
+        smallerSet.forEach((value) => {
+            if (biggerSet.includes(value)) {
+                intersectionSet.add(value)
+            }
+        })
+        return intersectionSet;
+    }
+
+    // 差集
+    difference(otherSet) {
+        const differenceSet = new Set();
+        this.values().forEach(value => {
+            if (!otherSet.has(value)) {
+                differenceSet.add(value);
+            }
+        });
+
+        return differenceSet;
     }
 
 }
@@ -77,7 +104,6 @@ set.add(1)
 console.log(set.values()); // [1]
 console.log(set.has(2));// false
 
-
 const setA = new Set();
 const setB = new Set();
 
@@ -85,7 +111,14 @@ setA.add(1)
 setA.add(2)
 setB.add(1)
 setB.add(3)
+
 const unionAB = setA.union(setB)
 console.log(setA)
 console.log(setB)
-console.log(unionAB)
+console.log("并集", unionAB)
+
+const intersectionAB = setA.intersection(setB)
+console.log("交集", intersectionAB)
+
+const differenceAB = setB.difference(setA);
+console.log("差集", differenceAB)
