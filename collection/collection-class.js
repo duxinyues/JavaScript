@@ -1,7 +1,7 @@
 /*
  * @Author: yongyuan at <yongyuan253015@gmail.com>
  * @Date: 2021-07-30 23:21:43
- * @LastEditTime: 2021-07-31 17:39:38
+ * @LastEditTime: 2021-07-31 18:02:22
  * @LastEditors: yongyuan at <yongyuan253015@gmail.com>
  * @Description: 集合的类声明
  * @FilePath: \JavaScript\collection\collection-class.js
@@ -94,6 +94,17 @@ class Set {
         return differenceSet;
     }
 
+    // 子集
+    isSubsetOf(otherSet) {
+        if (this.size() > otherSet.size()) {
+            return false
+        }
+
+        let isSubset = this.values().every(value => otherSet.has(value));
+
+        return isSubset
+    }
+
 }
 
 
@@ -111,6 +122,7 @@ setA.add(1)
 setA.add(2)
 setB.add(1)
 setB.add(3)
+setB.add(2)
 
 const unionAB = setA.union(setB)
 console.log(setA)
@@ -122,3 +134,5 @@ console.log("交集", intersectionAB)
 
 const differenceAB = setB.difference(setA);
 console.log("差集", differenceAB)
+
+console.log("集合A是集合B的子集", setA.isSubsetOf(setB))
