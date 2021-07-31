@@ -1,7 +1,7 @@
 /*
  * @Author: yongyuan at <yongyuan253015@gmail.com>
  * @Date: 2021-07-30 23:21:43
- * @LastEditTime: 2021-07-31 12:14:02
+ * @LastEditTime: 2021-07-31 15:18:13
  * @LastEditors: yongyuan at <yongyuan253015@gmail.com>
  * @Description: 集合的类声明
  * @FilePath: \JavaScript\collection\collection-class.js
@@ -47,10 +47,26 @@ class Set {
     values() {
         return Object.values(this.items)
     }
-
     // 集合运算：并集、交集、差集和子集
+    union(otherSet) {
+        const unionSet = new Set();
+        this.values().forEach(value => {
+            unionSet.add(value);
+        });
 
-    
+        otherSet.values().forEach((value) => {
+            unionSet.add(value);
+        })
+        return unionSet
+    }
+
+    // 交集
+    intersection(otherSet) {
+        const intersectionSet = new Set();
+        const  values = this.values();
+        
+    }
+
 }
 
 
@@ -62,7 +78,14 @@ console.log(set.values()); // [1]
 console.log(set.has(2));// false
 
 
-// 集合运算：并集、交集、差集和子集
+const setA = new Set();
+const setB = new Set();
 
-
-
+setA.add(1)
+setA.add(2)
+setB.add(1)
+setB.add(3)
+const unionAB = setA.union(setB)
+console.log(setA)
+console.log(setB)
+console.log(unionAB)
