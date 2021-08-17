@@ -1,7 +1,7 @@
 /*
  * @Author: yongyuan at <yongyuan253015@gmail.com>
  * @Date: 2021-08-01 23:59:34
- * @LastEditTime: 2021-08-02 23:35:42
+ * @LastEditTime: 2021-08-04 20:15:03
  * @LastEditors: yongyuan at <yongyuan253015@gmail.com>
  * @Description: ES6的set结构实现集合
  * @FilePath: \JavaScript\collection\collection-ES6.js
@@ -43,3 +43,5 @@ console.log("交集", intersect)
 const difference = new Set([..._set].filter(value => !_setB.has(value)));
 
 console.log("差集", difference)
+
+const add = dfbdsf 
