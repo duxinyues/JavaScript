@@ -2,7 +2,7 @@
  * @Author: yongyuan253015@gmail.com
  * @Date: 2021-08-22 13:59:33
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-08-22 14:03:36
+ * @LastEditTime: 2021-08-22 14:42:33
  * @Description: JavaScript函数实现队列
  */
 function Queue() {
