@@ -1,13 +1,16 @@
 /*
  * @Author: yongyuan at <yongyuan253015@gmail.com>
  * @Date: 2021-07-25 17:32:16
- * @LastEditTime: 2021-07-25 22:08:58
- * @LastEditors: yongyuan at <yongyuan253015@gmail.com>
+ * @LastEditTime: 2021-08-23 21:16:30
+ * @LastEditors: Please set LastEditors
  * @Description: JavaScript常见的工具类
  * @FilePath: \JavaScript\utils.js
  * 
  */
 
+/**
+ * 运算中的精度处理
+ */
 const operationObj = {
     // 处理传入参数，都统一处理为数组
     getParam(args) {
@@ -89,7 +92,16 @@ const operationObj = {
         return quotient;
     }
 }
-
-
 console.log(operationObj.add(0.1, 0.2))
-console.log(0.1 + 0.2)
+console.log(0.1 + 0.2);
+
+/**
+ * 判断两个数是否相等
+ * @param {*} a 
+ * @param {*} b 
+ * @returns 
+ */
+export function defaultEquals(a, b) {
+    return a === b;
+}
+
