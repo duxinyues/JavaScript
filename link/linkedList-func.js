@@ -2,7 +2,7 @@
  * @Author: yongyuan253015@gmail.com
  * @Date: 2021-08-23 21:53:43
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-08-23 22:46:22
+ * @LastEditTime: 2021-08-26 22:17:57
  * @Description: 链表骨架，函数方式
  */
 function LinkedList() {
@@ -95,12 +95,10 @@ function LinkedList() {
     this.getHead = function () { return head; }
     this.toString = function () {
         let current = head, string = '';
-
         while (current) {
             string += current.element + (current.next ? '\n' : "");
             current = current.next;
         }
-
         return string;
     }
 }
@@ -110,7 +108,11 @@ let list = new LinkedList();
 
 list.append(90);
 list.append(90);
-
+list.append(908987)
 console.log(list.size())
 console.log(list.toString())
+console.log(list.getHead())
+
+list.removeAt(0)
+
 console.log(list.getHead())
