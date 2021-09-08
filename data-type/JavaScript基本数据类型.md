@@ -1,15 +1,15 @@
 <!--
  * @Author: yongyuan at <yongyuan253015@gmail.com>
  * @Date: 2021-07-24 14:02:58
- * @LastEditTime: 2021-07-24 23:35:33
- * @LastEditors: yongyuan at <yongyuan253015@gmail.com>
+ * @LastEditTime: 2021-09-08 10:40:19
+ * @LastEditors: 1638877065@qq.com
  * @Description: 数据类型
  * @FilePath: \JavaScript\data-type\JavaScript基本数据类型.md
  * 
 -->
 
 JavaScript的数据类型可分为基本数据类型和引用数据类型：
-基本数据类型：undefined、null、Boolean、Number、string、symbol
+基本数据类型：undefined、null、Boolean、Number、string、symbol、BitInt
 引用数据类型：Object、Function、Array和Date
 
 ## 基本数据类型
@@ -42,7 +42,7 @@ undefined == null ;  // true
 
 null是JavaScript的关键字，undefined是JavaScript中的一个全局变量，是挂载window对象上的一个变量。
 
-#### Boolean
+#### 3、Boolean
 • 字符串""或者''会转为false；
 
 • 任何非空字符串转为true，包括" "；
@@ -54,7 +54,7 @@ null是JavaScript的关键字，undefined是JavaScript中的一个全局变量�
 • Undefined类型只有一个undefined值，会转换为false
 
 
-#### Number
+#### 4、Number
   • true转为1，false转为0
 
 • Null转为0
@@ -83,6 +83,22 @@ null是JavaScript的关键字，undefined是JavaScript中的一个全局变量�
 
  Number()函数转换的是传入的整个值，并不是像parseInt()函数和parseFloat()函数一样会从首位开始匹配符合条件的值。如果整个值不能被完整转换，则会返回“NaN”。
 
- isNaN()函数在判断是否为NaN时，需要先进行数据类型转换，只有在无法转换为数字时才会返回“true”；· Number.isNaN()函数在判断是否为NaN时，只需要判断传入的值是否为NaN，并不会进行数据类型转换。
+ isNaN()函数在判断是否为NaN时，需要先进行数据类型转换，只有在无法转换为数字时才会返回“true”；Number.isNaN()函数在判断是否为NaN时，只需要判断传入的值是否为NaN，并不会进行数据类型转换。
+#### 5、String
 
-## 应用数据类型   
+#### 6、Symbol
+
+#### 7、BigInt
+
+## 应用数据类型（Object）
+
+1. Array数组对象
+2. Function函数对象
+3. Date内置日期对象
+4. Math数学对象
+5. RegExp正则对象
+
+
+基础数据类型是存储在栈内存，被引用或者拷贝的时候，会在内存创建完全相等的变量。
+
+引用数据类型是存储在堆内存，存储的一个地址，被引用或者拷贝的时候，会指向同一个地址。
