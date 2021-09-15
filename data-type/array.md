@@ -2,7 +2,7 @@
  * @Author: yongyuan253015@gmail.com
  * @Date: 2021-09-15 10:13:42
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-09-15 16:14:09
+ * @LastEditTime: 2021-09-15 17:20:56
  * @Description: 数组总汇
 -->
 
@@ -82,3 +82,37 @@ forEach、every、some、filter、map、reduce、reduceRight、entries、find、
 ## 类数组
 函数的参数对象arguments就是一个类数组。
 
+## 数组扁平化
+1. reduce
+
+    ```
+    const arr00 = [1, [4, 4, [54, 65]]];
+    function flatArr(arr) {
+        return arr.reduce(function (prev, curr) {
+            return prev.concat(Array.isArray(curr) ? flatArr(curr) : curr)
+        }, [])
+    }
+    ```
+
+2. 扩展运算符
+   ```
+    const arr00 = [1, [4, 4, [54, 65]]];
+    function flatArr(arr) {
+        while (arr.some(function (item) { return Array.isArray(item) })) {
+            arr = [].concat(...arr)
+        }
+        return arr
+    }
+
+    console.log(flatArr(arr00))
+   ```
+
+3. split()和toString()
+   ```
+    const arr00 = [1, [4, 4, [54, 65]]];
+    function flatArr(arr) {
+        retutn arr.toString().split(",")
+    }
+
+    console.log(flatArr(arr00))
+   ```

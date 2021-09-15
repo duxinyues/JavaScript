@@ -2,7 +2,7 @@
  * @Author: yongyuan253015@gmail.com
  * @Date: 2021-08-23 21:40:21
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-09-15 16:37:32
+ * @LastEditTime: 2021-09-15 17:11:22
  * @Description: 文件描述
  */
 function add(a, b) {
@@ -43,3 +43,13 @@ for (const iterator of ss) {
         console.log(iterator)
     }
 })("duxin", 18)
+
+const arr00 = [1, [4, 4, [54, 65]]];
+function flatArr(arr) {
+    while (arr.some(function (item) { return Array.isArray(item) })) {
+        arr = [].concat(...arr)
+    }
+    return arr
+}
+
+console.log(flatArr(arr00))
