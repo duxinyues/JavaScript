@@ -1,7 +1,7 @@
 /*
  * @Author: yongyuan at <yongyuan253015@gmail.com>
  * @Date: 2021-07-25 17:32:16
- * @LastEditTime: 2021-08-23 21:16:30
+ * @LastEditTime: 2021-12-12 23:13:06
  * @LastEditors: Please set LastEditors
  * @Description: JavaScript常见的工具类
  * @FilePath: \JavaScript\utils.js
@@ -94,14 +94,3 @@ const operationObj = {
 }
 console.log(operationObj.add(0.1, 0.2))
 console.log(0.1 + 0.2);
-
-/**
- * 判断两个数是否相等
- * @param {*} a 
- * @param {*} b 
- * @returns 
- */
-export function defaultEquals(a, b) {
-    return a === b;
-}
-
