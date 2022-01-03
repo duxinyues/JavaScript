@@ -1,0 +1,47 @@
+<!--
+ * @Author: yongyuan253015@gmail.com
+ * @Date: 2022-01-03 12:47:14
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-01-03 13:58:10
+ * @Description: 文件描述
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>arrow</title>
+</head>
+
+<body>
+    <canvas id='canvas' width="400" height="400" style="border: 1px solid red;"></canvas>
+    <script src="./js/utils.js" modules='utils'></script>
+    <script src="./js/arrow.js"></script>
+    <script>
+        window.onload = () => {
+            let canvas = document.getElementById('canvas');
+            let context = canvas.getContext('2d');
+            let mouse = utils.captureMouse(canvas);
+            let arrow = new Arrow();
+
+            arrow.x = canvas.width / 2;
+            arrow.y = canvas.height / 2;
+
+            (function drawFrame() {
+                window.requestAnimationFrame(drawFrame, canvas);
+
+                context.clearRect(0, 0, canvas.width, canvas.height);
+
+                let dx = mouse.x - arrow.x;
+                let dy = mouse.y - arrow.y;
+
+                arrow.rotation = Math.atan2(dy, dx);
+                arrow.draw(context)
+            })()
+        }
+    </script>
+</body>
+
+</html>

@@ -1,40 +1,33 @@
 /*
  * @Author: yongyuan253015@gmail.com
- * @Date: 2021-09-13 22:53:27
+ * @Date: 2021-12-06 22:14:31
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-12-06 22:14:54
+ * @LastEditTime: 2021-12-12 23:53:50
  * @Description: 文件描述
  */
-// 深拷贝
-const obj = [
-    { name: "duxin" },
-    { name: "qingzhuxin" },
-    { name: "duxin" },
-    { name: "qingzhuxin" },
-    { name: "duxin" },
-    { name: "qingzhuxin" },
-    { name: "duxin" },
-    { name: "qingzhuxin" },
-    { name: "duxin" },
-    { name: "qingzhuxin" },
-    { name: "duxin" },
-    { name: "qingzhuxin" },
-    { name: "duxin" },
-    { name: "qingzhuxin" }
-]
-console.log("原数组长度", obj.length);
-const objSort = (arr) => {
-    arr.forEach((element, index) => {
-        if (index === arr.length - 1) return;
-        const sliceArr = arr.slice(index)
-        sliceArr.map((item) => {
-            if (element.name === item.name) {
-                const ii = arr.findIndex((items) => items.name === item.name);
-                arr.splice(ii, 1);
-                arr.splice(index + 1, 0, item);
+var twoSum = function (nums, target) {
+    const arr = [];
+    nums.map((item, index) => {
+        nums.map((its, i) => {
+            if (index == i) return;
+            if (item + its == target) {
+                arr.push(index);
+                arr.push(i);
             }
         })
-    });
-    console.log(arr)
-}
-objSort(obj)
+    })
+
+    return [...new Set(arr)]
+};
+
+console.log(twoSum(
+    [3, 2, 3],
+    6));
+
+
+
+var longestPalindrome = function (s) {
+      s = s.toLowerCase();
+      const arr = s.split('');
+      const reverS = arr.reverse();
+};
