@@ -2,7 +2,7 @@
  * @Author: yongyuan253015@gmail.com
  * @Date: 2022-01-03 12:39:14
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-01-03 13:26:08
+ * @LastEditTime: 2022-01-03 14:04:04
  * @Description: 文件描述
  */
 const utils = {
@@ -10,7 +10,6 @@ const utils = {
     captureMouse: (element) => {
         let mouse = { x: 0, y: 0 };
         element.addEventListener('mousemove', (event) => {
-            console.log("event", event, document)
             let x, y;
             if (event.pageX || event.page.Y) {
                 x = event.pageX;
