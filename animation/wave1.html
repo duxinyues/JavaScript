@@ -1,0 +1,50 @@
+<!--
+ * @Author: yongyuan253015@gmail.com
+ * @Date: 2022-01-03 23:27:39
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-01-04 20:40:48
+ * @Description: 文件描述
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>wave-ball</title>
+</head>
+
+<body>
+    <canvas id='canvas' width="400" height="400" style="border: 1px solid red;"></canvas>
+    <script src="./js/ball.js"></script>
+    <script>
+        window.onload = function () {
+            let canvas = document.getElementById('canvas');
+            let context = canvas.getContext('2d');
+            let angle = 0;
+            let centerY = canvas.height / 2;
+            let range = 30;
+            let xspeed = 1, yspeed = 0;
+            let xpos = 0, ypos = centerY;
+
+            context.lineWidth = 2;
+            (function drawFrame() {
+                window.requestAnimationFrame(drawFrame, canvas);
+                context.clearRect(0, 0, canvas.width, canvas.height);
+                context.beginPath();
+                context.moveTo(xpos, ypos);
+                xpos += xspeed;
+                angle += yspeed;
+
+                ypos = centerY + Math.sin(angle)*range;
+                context.lineTo(xpos,ypos);
+                context.stroke();
+
+                ball.draw(context)
+            })()
+        }
+    </script>
+</body>
+
+</html>
