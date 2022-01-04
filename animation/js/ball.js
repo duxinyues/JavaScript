@@ -2,12 +2,12 @@
  * @Author: yongyuan253015@gmail.com
  * @Date: 2022-01-03 22:47:13
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-01-03 23:21:48
+ * @LastEditTime: 2022-01-04 21:51:29
  * @Description: 文件描述
  */
 
 function Ball(radius, color) {
-    this.radius = radius || 150;
+    this.radius = radius || 10;
     this.color = color || "red";
     this.x = 0;
     this.y = 0;
