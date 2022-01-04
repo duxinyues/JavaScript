@@ -1,0 +1,42 @@
+<!--
+ * @Author: yongyuan253015@gmail.com
+ * @Date: 2022-01-04 20:11:36
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-01-04 20:17:20
+ * @Description: 文件描述
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>pulse</title>
+</head>
+
+<body>
+    <canvas id='canvas' width="400" height="400" style="border: 1px solid red;"></canvas>
+    <script src="./js/ball.js"></script>
+    <script>
+        let canvas = document.getElementById('canvas');
+        let context = canvas.getContext('2d');
+        let ball = new Ball();
+        let angle = 0, centerScale = 1, range = 0.3, speed = 0.05;
+
+        ball.x = canvas.width / 2;
+        ball.y = canvas.height / 2;
+
+        (function drawFrame() {
+            window.requestAnimationFrame(drawFrame, canvas);
+
+            context.clearRect(0, 0, canvas.width, canvas.height);
+
+            ball.scaleX = ball.scaleX = centerScale + Math.sin(angle) * range;
+            angle += speed;
+            ball.draw(context);
+        }())
+    </script>
+</body>
+
+</html>
