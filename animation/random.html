@@ -1,0 +1,46 @@
+<!--
+ * @Author: yongyuan253015@gmail.com
+ * @Date: 2022-01-04 20:20:08
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-01-04 20:32:38
+ * @Description: 文件描述
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>random</title>
+</head>
+
+<body>
+    <canvas id='canvas' width="400" height="400" style="border: 1px solid red;"></canvas>
+    <script src="./js/ball.js"></script>
+    <script>
+        window.onload = function() {
+            let canvas = document.getElementById('canvas');
+            let context = canvas.getContext('2d');
+
+            let ball = new Ball();
+            let angleX = 0, angleY = 0, range = 50, centerY = canvas.height / 2, centerX = canvas.width / 2, xspeed = 0.07, yspeed = 0.11;
+
+            (function drawFrame() {
+                window.requestAnimationFrame(drawFrame, canvas);
+
+                context.clearRect(0, 0, canvas.width, canvas.height);
+
+                ball.x = centerX + Math.sin(angleX) * range;
+                ball.y = centerY + Math.sin(angleY) * range;
+
+                angleX += xspeed;
+                angleY += yspeed;
+
+                ball.draw(context);
+            }())
+        }
+    </script>
+</body>
+
+</html>
