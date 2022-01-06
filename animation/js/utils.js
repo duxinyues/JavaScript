@@ -2,7 +2,7 @@
  * @Author: yongyuan253015@gmail.com
  * @Date: 2022-01-03 12:39:14
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-01-03 14:04:04
+ * @LastEditTime: 2022-01-06 22:37:08
  * @Description: 文件描述
  */
 const utils = {
@@ -60,5 +60,9 @@ const utils = {
         }, false);
 
         return touch
+    },
+    // 判断小球是否在矩形边界内
+    containsPoint: function (rect, x, y) {
+        return !(x < rect.x || x > rect.x + rect.width || y < rect.y || y > rect.y + rect.height);
     }
 }

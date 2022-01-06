@@ -1,0 +1,50 @@
+<!--
+ * @Author: yongyuan253015@gmail.com
+ * @Date: 2022-01-06 22:47:13
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-01-06 22:54:49
+ * @Description: 文件描述
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>spring</title>
+</head>
+
+<body>
+    <canvas id='canvas' width="400" height="400" style="border: 1px solid red;"></canvas>
+    <script src="./js/ball.js"></script>
+    <script>
+        window.onload = () => {
+            let canvas = document.getElementById('canvas');
+            let context = canvas.getContext('2d');
+            let ball = new Ball(12, 'blue');
+            let spring = 0.05;
+            let targetX = canvas.width / 2;
+            let vx = 0;
+            let vy = 0;
+
+            (function drawFrame() {
+                window.requestAnimationFrame(drawFrame, canvas);
+                context.clearRect(0, 0, canvas.width, canvas.height);
+
+                let dx = targetX - ball.x;
+                let ax = dx * spring;
+                let dy = canvas.height / 2 - ball.y;
+                vx += ax;
+                vy += dy * spring;
+                vx *= 0.95;
+                vy *= 0.75;
+                ball.x += vx;
+                ball.y += vy;
+                ball.draw(context);
+            }())
+        }
+    </script>
+</body>
+
+</html>

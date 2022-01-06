@@ -2,7 +2,7 @@
  * @Author: yongyuan253015@gmail.com
  * @Date: 2022-01-03 22:47:13
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-01-04 21:51:29
+ * @LastEditTime: 2022-01-06 22:34:24
  * @Description: 文件描述
  */
 
@@ -17,7 +17,7 @@ function Ball(radius, color) {
     this.lineWidth = 3;
 }
 
-
+// 绘制小球
 Ball.prototype.draw = function (context) {
     context.save();
     context.translate(this.x, this.y);
@@ -34,4 +34,14 @@ Ball.prototype.draw = function (context) {
         context.stroke();
     }
     context.restore();
+}
+
+// 绘制矩形
+Ball.prototype.getBounds = function () {
+    return {
+        x: this.x - this.radius,
+        y: this.y - this.radius,
+        width: this.width * 2,
+        height: this.height * 2
+    }
 }
