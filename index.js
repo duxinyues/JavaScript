@@ -43,13 +43,3 @@ for (const iterator of ss) {
         console.log(iterator)
     }
 })("duxin", 18)
-
-const arr00 = [1, [4, 4, [54, 65]]];
-function flatArr(arr) {
-    while (arr.some(function (item) { return Array.isArray(item) })) {
-        arr = [].concat(...arr)
-    }
-    return arr
-}
-
-console.log(flatArr(arr00))

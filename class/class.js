@@ -14,6 +14,13 @@ class Form {
     }
 }
 
-const form = new Form("duxin",90)
 
-console.log(form.getInfo()) ; // {name:'duxin,num:90}
+class Children extends Form {
+    constructor() {
+        super();
+        console.log(super.getInfo()) //{ name: undefined, num: undefined }
+    }
+}
+
+const text = new Children('duXin', 90, 12)
+console.log(text.getInfo());  // { name: undefined, num: undefined }
