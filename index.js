@@ -43,3 +43,13 @@ for (const iterator of ss) {
         console.log(iterator)
     }
 })("duxin", 18)
+
+var average = function (salary) {
+    let arr = salary.filter(function (item) {
+        return item !== Math.max(...salary) && item !== Math.min(...salary)
+    })
+    let sum = arr.reduce((previousValue, currentValue) => previousValue + currentValue, 0)
+    console.log('sss', sum / arr.length)
+};
+
+average([1, 2, 4, 5, 7, 8])
