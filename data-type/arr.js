@@ -1,12 +1,43 @@
-/*
- * @Author: yongyuan253015@gmail.com
- * @Date: 2021-12-08 22:40:40
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-12-08 22:41:43
- * @Description: 文件描述
- */
+var a = [1, [54, [43, 42, 5]]];
 
+// function flatten(arr) {
+//     let result = [];
+//     for (let i = 0; i < arr.length; i++) {
+//         if (Array.isArray(arr[i])) {
+//             result = result.concat(flatten(arr[i]));
+//         } else {
+//             result.push(arr[i]);
+//         }
+//     }
+//     return result;
+// }
+// console.log(flatten(a)); //[ 1, 54, 43, 42, 5 ]
 
-const arr = ['12','32','54']
-const result = arr.map(parseInt)
-console.log(result)
+// function flatten(arr) {
+//     return arr.reduce((prev, next) => {
+//         return prev.concat(Array.isArray(next) ? flatten(next) : next);
+//     }, [])
+// }
+
+// function flatten(arr) {
+//     while (arr.some(item => Array.isArray(item))) {
+//         arr = [].concat(...arr)
+//     }
+//     return arr
+// }
+
+// function flatten(arr) {
+//    return arr.toString().split(',')
+// }
+
+// function flatten(arr) {
+//     return arr.flat(Infinity)
+// }
+
+function flatten(arr) {
+    let str = JSON.stringify(arr);
+    str = str.replace(/(\[|\])/g, '');
+    str = '[' + str + ']';
+    return JSON.parse(str);
+}
+console.log(flatten(a))
