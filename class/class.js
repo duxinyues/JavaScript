@@ -16,11 +16,12 @@ class Form {
 
 
 class Children extends Form {
-    constructor() {
-        super();
-        console.log(super.getInfo()) //{ name: undefined, num: undefined }
+    constructor(name, num) {
+        // 继承父类的name、num属性
+        super(name, num);
     }
 }
 
-const text = new Children('duXin', 90, 12)
-console.log(text.getInfo());  // { name: undefined, num: undefined }
+const text = new Children('duXin', 90);
+text.count = 100;
+console.log(text);  // { name: undefined, num: undefined }
