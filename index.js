@@ -1,10 +1,3 @@
-/*
- * @Author: yongyuan253015@gmail.com
- * @Date: 2021-08-23 21:40:21
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-09-15 17:11:22
- * @Description: 文件描述
- */
 function add(a, b) {
     return a + b;
 }

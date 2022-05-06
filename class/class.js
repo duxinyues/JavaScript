@@ -24,4 +24,23 @@ class Children extends Form {
 
 const text = new Children('duXin', 90);
 text.count = 100;
-console.log(text);  // { name: undefined, num: undefined }
+
+class Obj {
+    constructor() {
+        this.name = null;
+        this.age = 1;
+    }
+
+    getInfo(param) {
+        return {
+            name : param.name,
+            age: param.age
+        }
+    }
+}
+
+const createUser =new Obj().getInfo({ name: '读心', age: 18 })
+const createUser1 =new Obj().getInfo({ name: '读心1', age: 181 })
+createUser1.name="907"
+console.log(createUser)
+console.log(createUser1)
