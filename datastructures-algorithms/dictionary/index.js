@@ -47,7 +47,6 @@ class Dictionary {
       delete this.table[this.toStringFn(key)];
       return true
     }
-
     return false;
   }
 
@@ -56,24 +55,59 @@ class Dictionary {
     return this.table[this.toStringFn(key)] != null
   }
 
-  get(key) { }
+  get(key) {
 
-  clear() { }
+    if (this.hasKey(key)) {
+      return this.table[this.toStringFn(key)]
+    }
+    return undefined
+  }
 
-  size() { }
+  clear() { this.table = {} }
 
-  inEmpty() { }
+  size() { return Object.keys(this.table).length }
 
-  keys() { }
+  inEmpty() { return this.size() === 0 }
 
-  values() { }
+  keys() {
+    return this.keyValues().map(value => value.key)
+  }
 
-  keyValues() { }
+  values() {
+    return this.keyValues().map((valuePair) => (valuePair.value))
+  }
 
-  forEach() { }
+  keyValues() {
+    return Object.values(this.table);
+    // 兼容写法：
+    const valuePairs = [];
+    for (const key in this.table) {
+      if (this.hasKey(key)) {
+        valuePairs.push(this.table[key]);
+      }
+    }
+    return ValuePair
+  }
+
+  forEach(callback) {
+    const valuePair = this.keyValues();
+
+    for (let index = 0; index < valuePair.length; index++) {
+      const result = callback(valuePair[index].key, valuePair[index].value);
+      if (result === false) break;
+    }
+
+  }
 }
 
 const setData = new Dictionary();
 
 setData.set(2, 200)
+setData.set(3, 200)
 console.log(setData)
+console.log("get：", setData.get(2))
+console.log("keyValues", setData.keyValues())
+console.log(setData.remove(1))
+console.log("remove后的字典", setData)
+
+console.log(setData.values())
