@@ -1,10 +1,5 @@
 /*
- * @Author: yongyuan at <yongyuan253015@gmail.com>
- * @Date: 2021-07-30 23:21:43
- * @LastEditTime: 2021-07-31 18:06:52
- * @LastEditors: yongyuan at <yongyuan253015@gmail.com>
  * @Description: 集合的类声明
- * @FilePath: \JavaScript\collection\collection-class.js
  * 
  */
 class Set {
@@ -138,4 +133,4 @@ console.log("差集", differenceAB)
 console.log("集合A是集合B的子集", setA.isSubsetOf(setB))
 
 
-console.log(new  Set([{a:1,a:1,a:2,b:3}]))
+console.log(new Set([{ a: 1, a: 1, a: 2, b: 3 }]))
