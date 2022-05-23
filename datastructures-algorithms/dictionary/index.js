@@ -100,14 +100,7 @@ class Dictionary {
   }
 }
 
-const setData = new Dictionary();
-
-setData.set(2, 200)
-setData.set(3, 200)
-console.log(setData)
-console.log("get：", setData.get(2))
-console.log("keyValues", setData.keyValues())
-console.log(setData.remove(1))
-console.log("remove后的字典", setData)
-
-console.log(setData.values())
+const dictionary = new Dictionary();
+dictionary.set("duxin","1638877065@qq.com")
+console.log(dictionary)
+console.log(dictionary.hasKey("duxin"))
