@@ -343,7 +343,32 @@ const BFS = (graph, startVertex) => {
 
 // 深度优先搜索
 const depthFirstSearch = (graph, callback) => {
-  
+  const vertice = graph.getVertices();
+  const adjList = graph.getAdjList();
+  const color = initializeColor(vertice);
+
+  for (let index = 0; index < vertice.length; index++) {
+    if (color[vertice[index]] === Colors.WHITE) {
+      depthFirstSearchVisit(vertice[index], color, adjList, callback)
+    }
+  }
+}
+
+const depthFirstSearchVisit = (u, color, adjList, callback) => {
+  color[u] = Colors.GREY;
+  if (callback) {
+    callback(u);
+  }
+
+  const neighbors = adjList.get(u)['value'];
+  for (let index = 0; index < neighbors.length; index++) {
+    const w = neighbors[index];
+    if (color[w] === Colors.WHITE) {
+      depthFirstSearchVisit(w, color, adjList, callback)
+    }
+  }
+
+  color[u] = Colors.BLACK;
 }
 
 // const dictionary = new Dictionary();
@@ -383,3 +408,7 @@ breadthFirstSearch(graph, arr[0], (value) => {
 
 const distances = BFS(graph, "B")
 console.log("最短距离", distances)
+
+depthFirstSearch(graph, (value) => {
+  console.log("深度搜索", value)
+})
