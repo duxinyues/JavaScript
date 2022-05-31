@@ -394,7 +394,7 @@ graph.addEdge('D', 'H');
 graph.addEdge('B', 'E');
 graph.addEdge('B', 'F');
 graph.addEdge('E', 'I');
-console.log(graph.toString())
+// console.log(graph.toString())
 
 
 /**
@@ -403,12 +403,12 @@ console.log(graph.toString())
  */
 
 breadthFirstSearch(graph, arr[0], (value) => {
-  console.log("图的顶点", value)
+  // console.log("图的顶点", value)
 })
 
 const distances = BFS(graph, "B")
-console.log("最短距离", distances)
+// console.log("最短距离", distances)
 
 depthFirstSearch(graph, (value) => {
-  console.log("深度搜索", value)
+  // console.log("深度搜索", value)
 })

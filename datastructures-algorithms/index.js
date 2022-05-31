@@ -11,5 +11,3 @@ function fn(num) {
     if (num <= 2) return 1;
     return fn(num - 1) + fn(num - 2)
 }
-
-console.log("第6项：", fn(6))
