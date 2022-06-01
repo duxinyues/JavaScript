@@ -4,3 +4,7 @@ export function defaultCompare(a, b) {
     }
     return a < b ? -1 : 1;
 }
+
+export function swap(arr, a, b) {
+    [arr[a], arr[b]] = [arr[b], arr[a]]
+}
