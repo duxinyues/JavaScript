@@ -2,7 +2,7 @@ import {
     defaultCompare
 } from "../utils/index.js";
 
-function insertSort(array, compareFn = defaultCompare) {
+export function insertSort(array, compareFn = defaultCompare) {
     let temp;
     for (let index = 1; index < array.length; index++) {
         let key = index;
@@ -19,3 +19,4 @@ function insertSort(array, compareFn = defaultCompare) {
 
 const arr = [3, 5, 2, 1, 3, 7, 0]
 console.log(insertSort(arr))
+
