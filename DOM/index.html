@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+         table{border-right:1px solid #F00;border-bottom:1px solid #F00} 
+         table td{border-left:1px solid #F00;border-top:1px solid #F00} 
+    </style>
+</head>
+
+<body>
+    <table  border="0" cellspacing="0" cellpadding="0">
+        <tr>
+            <td>124</td>
+        </tr>
+    </table>
+    <ul id="list"></ul>
+    <table id="table"></table>
+    <script>
+        const tableData = [
+            { id: 001, name: '张珊', job: '学生' },
+            { id: 002, name: '李斯', job: '教师' },
+            { id: 003, name: '王武', job: '经理' }
+        ];
+        function addLi() {
+            let fragment = document.createDocumentFragment();
+            let ul = document.getElementById("list");
+            for (let index = 0; index < 3; index++) {
+                let li = document.createElement('li');
+                li.appendChild(document.createTextNode(`item-${index + 1}`));
+                fragment.appendChild(li);
+            }
+            ul.appendChild(fragment)
+        }
+        function getDataRow(data) {
+            let row = document.createElement('tr');
+            let idCell = document.createElement('td');
+            idCell.innerHTML = data.id;
+            row.appendChild(idCell);
+
+            let nameCell = document.createElement('td');
+            nameCell.innerHTML = data.name;
+            row.appendChild(nameCell);
+
+            let jobCell = document.createElement('td');
+            jobCell.innerHTML = data.job;
+            row.appendChild(jobCell);
+
+            return row;
+        }
+        window.onload = function () {
+            addLi();
+            let tbody = document.getElementById('table')
+            tableData.forEach(item => {
+                let trow = getDataRow(item)
+                tbody.appendChild(trow);
+            })
+        }
+    </script>
+</body>
+
+</html>
