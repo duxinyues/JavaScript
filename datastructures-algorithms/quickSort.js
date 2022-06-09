@@ -3,7 +3,7 @@ import {
     defaultCompare
 } from "../utils/index.js";
 
-function quickSort(array, compareFn = defaultCompare) {
+export function quickSort(array, compareFn = defaultCompare) {
     // left指向数组首位，right指向数组末位
     return quick(array, 0, array.length - 1, compareFn)
 }
