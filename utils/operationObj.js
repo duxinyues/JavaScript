@@ -1,13 +1,12 @@
 /*
- * @Author: yongyuan at <yongyuan253015@gmail.com>
- * @Date: 2021-07-25 17:32:16
- * @LastEditTime: 2021-12-12 23:13:06
- * @LastEditors: Please set LastEditors
- * @Description: JavaScript常见的工具类
- * @FilePath: \JavaScript\utils.js
- * 
+ * @Author: duxinyues yongyuan253015@gmail.com
+ * @Date: 2022-01-20 23:26:48
+ * @LastEditors: duxinyues yongyuan253015@gmail.com
+ * @LastEditTime: 2022-07-03 11:43:43
+ * @FilePath: \JavaScript\utils\operationObj.js
+ * @Description: 
+ * Copyright (c) 2022 by duxinyues email: yongyuan253015@gmail.com, All Rights Reserved.
  */
-
 /**
  * 运算中的精度处理
  */
@@ -92,5 +91,7 @@ const operationObj = {
         return quotient;
     }
 }
-console.log(operationObj.add(0.1, 0.2))
+console.log(operationObj.add({
+    name: 98
+}, 0.2))
 console.log(0.1 + 0.2);
