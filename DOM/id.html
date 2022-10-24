@@ -1,0 +1,43 @@
+<!--
+ * @Author: duxinyues yongyuan253015@gmail.com
+ * @Date: 2022-10-23 15:25:25
+ * @LastEditors: duxinyues yongyuan253015@gmail.com
+ * @LastEditTime: 2022-10-24 15:52:48
+ * @FilePath: \JavaScript\DOM\id.html
+ * @Description: 
+ * Copyright (c) 2022 by duxinyues email: yongyuan253015@gmail.com, All Rights Reserved.
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="main">
+        <div id="div1">被替换的元素</div>
+        <div id="div2" class="classA" style="color: red;">修改属性节点的元素</div>
+        <div id="last">最后的节点</div>
+    </div>
+
+    <script>
+        const container = document.querySelector("#main");
+        const div1 = document.querySelector("#div1");
+        const div2 = document.querySelector("#div2");
+        div2.setAttribute("class","0987987")
+
+        const newDiv = document.createElement("div");
+        const newDivText = document.createTextNode("新建文本内容");
+
+        newDiv.appendChild(newDivText);
+
+        // 替换div1的文本
+        container.replaceChild(newDiv, div1)
+    </script>
+</body>
+
+</html>

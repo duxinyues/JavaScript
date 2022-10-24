@@ -1,3 +1,12 @@
+/*
+ * @Author: duxinyues yongyuan253015@gmail.com
+ * @Date: 2022-07-30 13:24:54
+ * @LastEditors: duxinyues yongyuan253015@gmail.com
+ * @LastEditTime: 2022-09-27 17:13:45
+ * @FilePath: \JavaScript\utils\deepClone.js
+ * @Description: 
+ * Copyright (c) 2022 by duxinyues email: yongyuan253015@gmail.com, All Rights Reserved.
+ */
 const isComplexDataType = obj => (typeof obj === 'object' || typeof obj === 'function') && (obj !== null)
 const deepClone = function (obj, hash = new WeakMap()) {
   if (obj.constructor === Date)
@@ -42,11 +51,3 @@ let obj = {
   [Symbol('1')]: 1,
 
 };
-
-const str = '  325  '
-
-// console.log(str.trim())
-
-for (var index = 1; index <= 3; index++) {
-  setTimeout(() => { console.log(index)}, 0)
-}

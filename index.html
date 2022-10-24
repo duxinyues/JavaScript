@@ -1,0 +1,41 @@
+<!--
+ * @Author: duxinyues yongyuan253015@gmail.com
+ * @Date: 2022-09-25 15:01:23
+ * @LastEditors: duxinyues yongyuan253015@gmail.com
+ * @LastEditTime: 2022-09-26 20:50:42
+ * @FilePath: \JavaScript\index.html
+ * @Description: 
+ * Copyright (c) 2022 by duxinyues email: yongyuan253015@gmail.com, All Rights Reserved.
+-->
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        var value = 10;
+        var obj = {
+            value: 100,
+            method: function () {
+                console.log(this);//obj对象
+                var foo = function () {
+                    console.log(this.value);  // 10
+                    console.log(this);  // Window对象
+                };
+                foo();
+                return this.value;
+            }
+        };
+        obj.method();
+    </script>
+</body>
+
+</html>

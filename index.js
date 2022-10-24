@@ -2,7 +2,7 @@
  * @Author: duxinyues yongyuan253015@gmail.com
  * @Date: 2022-02-09 23:04:30
  * @LastEditors: duxinyues yongyuan253015@gmail.com
- * @LastEditTime: 2022-09-24 21:58:51
+ * @LastEditTime: 2022-09-27 21:36:46
  * @FilePath: \JavaScript\index.js
  * @Description: 
  * Copyright (c) 2022 by duxinyues email: yongyuan253015@gmail.com, All Rights Reserved.
@@ -120,4 +120,66 @@ function unique3(array) {
     }
     return result;
 }
-console.log(unique3(arr)); //[1, 3, 4, 5,'5', 6, 23]
+
+function unique4(array) {
+    var result = [];
+    for (var i = 0, l = array.length; i < array.length; i++) {
+        for (var j = i + 1; j < l; j++) {
+            // 依次与后面的值进行比较，如果出现相同的值，则更改索引值
+            if (array[i] === array[j]) {
+                j = ++i;
+            }
+        }
+        // 每轮比较完毕后，索引为i的值为数组中只出现一次的值
+        result.push(array[i]);
+    }
+    return result;
+}
+function unique5(array) {
+    var obj = {}, type;
+    return array.reduce(function (preValue, curValue) {
+        type = typeof curValue;
+        if (!obj[curValue]) {
+            obj[curValue] = [type];
+            preValue.push(curValue);
+        } else if (obj[curValue].indexOf(type) < 0) {   // 判断数据类型是否存在
+            obj[curValue].push(type);
+            preValue.push(curValue);
+        }
+        return preValue;
+    }, []);
+}
+function unique6(array) {
+    return Array.from(new Set(array));
+}
+
+function ﬁndMost1(arr) {
+    if (!arr.length) return;
+    if (arr.length === 1) return 1;
+    var res = {};
+    // 遍历数组
+    for (var i = 0, l = arr.length; i < l; i++) {
+        if (!res[arr[i]]) {
+            res[arr[i]] = 1;
+        } else {
+            res[arr[i]]++;
+        }
+    }
+    // 遍历 res
+    var keys = Object.keys(res);
+    var maxNum = 0, maxEle;
+    for (var i = 0, l = keys.length; i < l; i++) {
+        if (res[keys[i]] > maxNum) {
+            maxNum = res[keys[i]];
+            maxEle = keys[i];
+        }
+    }
+    return '出现次数最多的元素为:' + maxEle + '，出现次数为:' + maxNum;
+}
+
+
+const  obj = {
+    name:"duxin"
+}
+
+console.log(obj.__proto__) //[Object: null prototype] {}
