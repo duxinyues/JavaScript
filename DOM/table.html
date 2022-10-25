@@ -2,19 +2,21 @@
  * @Author: duxinyues yongyuan253015@gmail.com
  * @Date: 2022-10-24 16:21:16
  * @LastEditors: duxinyues yongyuan253015@gmail.com
- * @LastEditTime: 2022-10-24 16:21:18
+ * @LastEditTime: 2022-10-24 17:37:53
  * @FilePath: \JavaScript\DOM\table.html
  * @Description: 
  * Copyright (c) 2022 by duxinyues email: yongyuan253015@gmail.com, All Rights Reserved.
 -->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
     <table id="table">
         <tbody>
@@ -23,5 +25,20 @@
             </tr>
         </tbody>
     </table>
+    <button onclick="onclickBtn()">点击</button>
+    <script>
+
+        const table = document.querySelector("table");
+        const tbody = document.querySelector("tbody");
+        const tr = document.querySelector("tr");
+        const td = document.querySelector("td");
+
+
+        td.addEventListener("click", function (event) {
+            console.log("在td元素上触发点击事件", event)
+        });
+
+    </script>
 </body>
+
 </html>

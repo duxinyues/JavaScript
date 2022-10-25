@@ -1,0 +1,39 @@
+<!--
+ * @Author: duxinyues yongyuan253015@gmail.com
+ * @Date: 2022-10-24 17:44:45
+ * @LastEditors: duxinyues yongyuan253015@gmail.com
+ * @LastEditTime: 2022-10-24 18:12:41
+ * @FilePath: \JavaScript\DOM\ul.html
+ * @Description: 
+ * Copyright (c) 2022 by duxinyues email: yongyuan253015@gmail.com, All Rights Reserved.
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <ul>
+        <li>1 </li>
+        <li>2 </li>
+        <li>3 </li>
+        <li>4 </li>
+        <li>5</li>
+    </ul>
+    <script>
+        const parent = document.querySelector("ul");
+        parent.addEventListener("click", function (event) {
+            //获取事件对象
+            if (event.target.nodeName.toLowerCase() === 'li') {
+                console.log(event.target.innerText)
+            }
+        })
+    </script>
+</body>
+
+</html>
