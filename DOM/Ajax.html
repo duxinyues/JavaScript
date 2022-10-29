@@ -2,7 +2,7 @@
  * @Author: duxinyues yongyuan253015@gmail.com
  * @Date: 2022-10-27 20:01:41
  * @LastEditors: duxinyues yongyuan253015@gmail.com
- * @LastEditTime: 2022-10-27 20:42:32
+ * @LastEditTime: 2022-10-29 14:38:23
  * @FilePath: \JavaScript\DOM\Ajax.html
  * @Description: 
  * Copyright (c) 2022 by duxinyues email: yongyuan253015@gmail.com, All Rights Reserved.
@@ -18,44 +18,61 @@
 </head>
 
 <body>
-
-
+    <form name="userForm" id="userForm">
+        <div class="form-group">
+            <label for="username">用户名</label>
+            <input type="text" class="form-control" name="username" id="username">
+        </div>
+        <div class="form-group">
+            <label for="password">密码</label>
+            <input type="password" class="form-control" name="password" id="password">
+        </div>
+        <div class="text-center">
+            <input type="button" class="btn btn-default btn-primary" value="提交" id="submit">
+        </div>
+    </form>
+    <div id="result"></div>
     <script>
-        function createXMLHttp() {
-            // code for IE7+, Firefox, Chrome, Opera, Safari
-            if (window.XMLHttpRequest) {
-                xmlhttp = new XMLHttpRequest();
+        const textDiv = document.getElementById("result")
+        function ajaxBtn() {
+            var xhr = new XMLHttpRequest();
+            xhr.open("post", "http://192.168.0.114:3000/user/login", true);
+            xhr.setRequestHeader("Content-Type", "application/json")
+            //  请求参数
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value
+            var content = {
+                name: username,
+                password: password,
             }
-            // code for IE6, IE5
-            if (window.ActiveXObject) {
-                try {
-                    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-                }
-                catch (e) {
-                    try {
-                        xmlhttp = new ActiveXObject("msxml2.XMLHTTP");
-                    }
-                    catch (ex) { }
-                }
-            }
-        }
-        var xhr = new XMLHttpRequest();
-        xhr.open("post", "/admin/login", true);
-        //  请求参数
-        var content = {
-            userName: 'duxin',
-            password: '123456',
-        }
 
-        // 发送请求
-        xhr.send(content);
+            // 发送请求
+            xhr.send(JSON.stringify(content));
 
-        // 处理响应
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4 && xhr.readyState === 200) {
-                document.write(xhr.responseText)
+            // 处理响应
+            xhr.onloadstart = function () {
+                console.log("开始接收数据")
             }
+            xhr.onerror = function () {
+                console.log("err")
+            }
+            xhr.onload = function (event) {
+                console.log("event", event)
+            }
+            xhr.onloadend = function () {
+                console.log('loadend:通信完成')
+            }
+            // xhr.onreadystatechange = function () {
+            //     console.log("网络请求", xhr)
+            //     if (xhr.readyState === 4 && xhr.status === 200) {
+            //         textDiv.innerText = xhr.responseText
+            //     }
+            // }
         }
+        var btn = document.getElementById("submit");
+        btn.addEventListener("click", function () {
+            ajaxBtn();
+        })
     </script>
 </body>
 
