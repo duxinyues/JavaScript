@@ -1,0 +1,49 @@
+<!--
+ * @Author: duxinyues yongyuan253015@gmail.com
+ * @Date: 2022-12-02 17:01:58
+ * @LastEditors: duxinyues yongyuan253015@gmail.com
+ * @LastEditTime: 2022-12-02 17:10:04
+ * @FilePath: \electron-react\fileURL.html
+ * @Description:
+ * Copyright (c) 2022 by duxinyues email: yongyuan253015@gmail.com, All Rights Reserved.
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <input type="file" id="file" multiple>
+
+  <div type="text" id="output"></div>
+
+  <div id="progress"></div>
+  <script>
+    let filesList = document.getElementById("file");
+    filesList.addEventListener("change", (event) => {
+      let info = "",
+        output = document.getElementById("output"),
+        progress = document.getElementById("progress"),
+        files = event.target.files,
+        reader = new FileReader(),
+        url=window.URL.createObjectURL(files[0]);
+        console.log("url",url)
+      if (url) {
+        if (/image/.test(files[0].type)) {
+          output.innerHTML=`<img src="${url}">`;
+        } else {
+          output.innerHTML = "Not an image.";
+        }
+      } else {
+        output.innerHTML = "Your browser doesn't support object URLs.";
+      }
+    });
+  </script>
+</body>
+
+</html>

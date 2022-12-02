@@ -1,0 +1,68 @@
+<!--
+ * @Author: duxinyues yongyuan253015@gmail.com
+ * @Date: 2022-11-30 22:47:34
+ * @LastEditors: duxinyues yongyuan253015@gmail.com
+ * @LastEditTime: 2022-12-02 16:42:02
+ * @FilePath: \electron-react\file.html
+ * @Description:
+ * Copyright (c) 2022 by duxinyues email: yongyuan253015@gmail.com, All Rights Reserved.
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <input type="file" id="file">
+
+  <div type="text" id="output"></div>
+
+  <div id="progress"></div>
+  <script>
+    let filesList = document.getElementById("file");
+    filesList.addEventListener("change", (event) => {
+      let info = "",
+          output = document.getElementById("output"),
+          progress = document.getElementById("progress"),
+          files = event.target.files,
+          type = "default",
+          reader = new FileReader();
+      if (/image/.test(files[0].type)) {
+        reader.readAsDataURL(files[0]);
+        type = "image";
+      } else {
+        reader.readAsText(files[0]);
+        type = "text";
+      }
+      reader.onerror = function() {
+        output.innerHTML = "Could not read file, error code is " +
+            reader.error.code;
+      };
+      reader.onprogress = function(event) {
+        if (event.lengthComputable) {
+          console.log(`${event.loaded}/${event.total}`)
+          progress.innerHTML = `${event.loaded}/${event.total}`;
+        }
+      };
+      reader.onload = function() {
+        let html = "";
+        switch(type) {
+          case "image":
+            html = `<img src="${reader.result}">`;
+            break;
+          case "text":
+            html = reader.result;
+            break;
+        }
+        output.innerHTML = html;
+      };
+    });
+  </script>
+</body>
+
+</html>
