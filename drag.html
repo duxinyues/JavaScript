@@ -1,0 +1,56 @@
+<!--
+ * @Author: duxinyues yongyuan253015@gmail.com
+ * @Date: 2022-12-04 18:09:32
+ * @LastEditors: duxinyues yongyuan253015@gmail.com
+ * @LastEditTime: 2022-12-04 18:30:41
+ * @FilePath: \JavaScript\drag.html
+ * @Description: 
+ * Copyright (c) 2022 by duxinyues email: yongyuan253015@gmail.com, All Rights Reserved.
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>原生拖放事件</title>
+    <style>
+        #droptarget {
+            width: 100px;
+            height: 100px;
+            border: 1px solid red;
+        }
+
+        #drop {
+            width: 100px;
+            height: 50px;
+            border: 1px solid blue;
+            text-align: center;
+            line-height: 50px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="droptarget"></div>
+    <div id="drop" draggable="true">可以拖动元素 </div>
+    <script>
+        let dropTarget = document.getElementById("droptarget");
+        dropTarget.addEventListener("dragover", (event) => {
+            event.preventDefault();
+            console.log("dragover")
+        });
+
+        dropTarget.addEventListener("dragenter", (event) => {
+            event.preventDefault();
+            console.log("dragenter")
+        });
+        dropTarget.addEventListener("drop", (event) => {
+            event.preventDefault();
+            console.log("drop")
+        });
+    </script>
+</body>
+
+</html>
